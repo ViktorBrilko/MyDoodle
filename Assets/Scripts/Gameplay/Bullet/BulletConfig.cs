@@ -6,19 +6,12 @@ public class BulletConfig : ScriptableObject
     [SerializeField] private int _damage;
     [SerializeField] private int _speed;
     [SerializeField] private float _maxLifetime;
+    [SerializeField] private GameObject _prefab;
 
-    public int Damage
-    {
-        get => _damage;
-    }
+    public GameObject Prefab => _prefab;
+    public int Damage => _damage;
+    public int Speed => _speed;
+    public float MaxLifetime => _maxLifetime;
 
-    public int Speed
-    {
-        get => _speed;
-    }
-
-    public float MaxLifetime
-    {
-        get => _maxLifetime;
-    }
+   
 }

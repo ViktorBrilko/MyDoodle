@@ -1,3 +1,4 @@
+using Gameplay;
 using UnityEngine;
 using Zenject;
 
@@ -7,17 +8,17 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private Collider2D _groundChecker;
     [SerializeField] private Transform _bulletSpawnPoint;
-    
-    private BulletSpawner _bulletSpawner;
+
+    private BaseSpawner<Bullet> _bulletSpawner;
     private Rigidbody2D _rigidbody2D;
-   
+
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
     }
-    
+
     [Inject]
-    public void Construct(BulletSpawner spawner)
+    public void Construct(BaseSpawner<Bullet> spawner)
     {
         _bulletSpawner = spawner;
     }
@@ -29,7 +30,7 @@ public class Player : MonoBehaviour
 
     public void Fire()
     {
-        _bulletSpawner.SpawnBullet(_bulletSpawnPoint);
+        _bulletSpawner.SpawnItem(_bulletSpawnPoint);
     }
 
     private bool IsGrounded()
@@ -42,7 +43,9 @@ public class Player : MonoBehaviour
     {
         if (IsGrounded())
         {
-            _rigidbody2D.AddForce(new Vector2(0, _jumpForce), ForceMode2D.Impulse);
+            Vector2 velocity = _rigidbody2D.velocity;
+            velocity.y = _jumpForce;
+            _rigidbody2D.velocity = velocity;
         }
     }
 }

@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a1105e70a8e1404ea64a81f47c4618a, type: 3}
-  m_Name: GameSettingsInstaller
+  m_Script: {fileID: 11500000, guid: 2dc9624e22e04d4bbe66921be60325d0, type: 3}
+  m_Name: EnemyConfig
   m_EditorClassIdentifier: 
-  _bulletConfig: {fileID: 11400000, guid: 55777c18f9b408844801c83c85f6a3ed, type: 2}
+  _health: 20
+  _prefab: {fileID: 4596384423190649227, guid: 3be98a19794bea2409db9451661eaf14, type: 3}

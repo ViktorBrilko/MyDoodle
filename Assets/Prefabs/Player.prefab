@@ -246,7 +246,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 12028e9d068338448adead3ad1b4ffea, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -327,7 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3237592b2dc2b446b71b90fe87d9c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpForce: 5
+  _jumpForce: 7
   _speed: 5
   _groundChecker: {fileID: 6269316929395067010}
   _bulletSpawnPoint: {fileID: 5274947772079340345}

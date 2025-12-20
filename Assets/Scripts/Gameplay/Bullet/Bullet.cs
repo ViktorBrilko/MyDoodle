@@ -16,15 +16,6 @@ public class Bullet : MonoBehaviour, IResetable
         CheckLifetime();
     }
 
-    private void CheckLifetime()
-    {
-        CurrentLifetime += Time.deltaTime;
-        if (CurrentLifetime >= _maxLifetime)
-        {
-            DestroyBullet();
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent(out Enemy enemy))
@@ -42,6 +33,15 @@ public class Bullet : MonoBehaviour, IResetable
         _maxLifetime = maxLifetime;
         _signalBus = signalBus;
     }
+    
+    private void CheckLifetime()
+    {
+        CurrentLifetime += Time.deltaTime;
+        if (CurrentLifetime >= _maxLifetime)
+        {
+            DestroyBullet();
+        }
+    }
 
     private void Move()
     {
@@ -51,5 +51,10 @@ public class Bullet : MonoBehaviour, IResetable
     private void DestroyBullet()
     {
         _signalBus.Fire(new ResetSignal<Bullet>(this));
+    }
+
+    public void Reset()
+    {
+        CurrentLifetime = 0;
     }
 }

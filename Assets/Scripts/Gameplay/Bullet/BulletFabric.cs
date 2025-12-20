@@ -1,27 +1,19 @@
 using UnityEngine;
 using Zenject;
 
-public class BulletFabric : IFabric<Bullet>
+public class BulletFabric : BaseFabric<Bullet>
 {
-    private int _damage;
-    private int _speed;
-    private float _maxLifetime;
-    private GameObject _bulletPrefab;
-    private readonly DiContainer _container;
+    private BulletConfig _bulletConfig;
 
-    public BulletFabric(DiContainer container, BulletConfig bulletConfig, GameObject bulletPrefab)
+    public BulletFabric(DiContainer container, BulletConfig bulletConfig) : base(container)
     {
-        _bulletPrefab = bulletPrefab;
-        _container = container;
-        _damage = bulletConfig.Damage;
-        _speed = bulletConfig.Speed;
-        _maxLifetime = bulletConfig.MaxLifetime;
+        _bulletConfig = bulletConfig;
     }
 
-    public Bullet Create(Transform parent)
+    public override Bullet Create(Transform parent)
     {
-        Bullet bullet = _container.InstantiatePrefabForComponent<Bullet>(_bulletPrefab, parent,
-            new object[] { _damage, _speed, _maxLifetime });
+        Bullet bullet = Container.InstantiatePrefabForComponent<Bullet>(_bulletConfig.Prefab, parent,
+            new object[] {  _bulletConfig.Damage, _bulletConfig.Speed, _bulletConfig.MaxLifetime });
 
         return bullet;
     }

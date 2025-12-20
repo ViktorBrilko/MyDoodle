@@ -3,14 +3,14 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 
-public class ObjectPool<T> : IInitializable where T : Component 
+public class ObjectPool<T> : IInitializable where T : Component
 {
     private int _capacity;
-    private IFabric<T> _fabric;
+    private BaseFabric<T> _fabric;
     private List<T> _pool = new();
     private Transform _container;
 
-    public ObjectPool(IFabric<T> fabric, Transform container, int capacity)
+    public ObjectPool(BaseFabric<T> fabric, Transform container, int capacity)
     {
         _fabric = fabric;
         _capacity = capacity;
@@ -27,10 +27,16 @@ public class ObjectPool<T> : IInitializable where T : Component
     {
         for (int i = 0; i < _capacity; i++)
         {
-            T spawned = _fabric.Create(_container.transform);
-            spawned.gameObject.SetActive(false);
-
-            _pool.Add(spawned);
+            AddNewItem();
         }
+    }
+
+    public T AddNewItem()
+    {
+        T spawned = _fabric.Create(_container.transform);
+        spawned.gameObject.SetActive(false);
+
+        _pool.Add(spawned);
+        return spawned;
     }
 }

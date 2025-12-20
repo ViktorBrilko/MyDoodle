@@ -150,7 +150,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 467081363}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 12028e9d068338448adead3ad1b4ffea, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -482,7 +482,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1340246783}
   m_Layer: 0
-  m_Name: StartPoint
+  m_Name: PlayerStartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -597,10 +597,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f907bc4b8d125384891eb67cbb2d67d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletPrefab: {fileID: 1570120865947616967, guid: 91286d4afe9eaef438f124c630d2ad50, type: 3}
-  _enemyPrefab: {fileID: 4596384423190649227, guid: 3be98a19794bea2409db9451661eaf14, type: 3}
   _platformPrefab: {fileID: 0}
   bulletPoolCapacity: 20
+  enemyPoolCapacity: 20
 --- !u!1001 &3865954064137160274
 PrefabInstance:
   m_ObjectHideFlags: 0
