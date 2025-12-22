@@ -4,13 +4,13 @@ using Zenject;
 
 namespace Gameplay
 {
-    public class BaseSpawner<T> : IInitializable, IDisposable
+    public class Spawner<T> : IInitializable, IDisposable
         where T : Component, IResetable
     {
         private ObjectPool<T> _pool;
         private SignalBus _signalBus;
 
-        public BaseSpawner(ObjectPool<T> pool, SignalBus signalBus)
+        public Spawner(ObjectPool<T> pool, SignalBus signalBus)
         {
             _pool = pool;
             _signalBus = signalBus;

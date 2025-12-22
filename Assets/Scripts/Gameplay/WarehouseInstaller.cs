@@ -26,7 +26,7 @@ public class WarehouseInstaller : MonoInstaller
         Container.Bind<BaseFabric<Enemy>>().To<EnemyFabric>().AsSingle();
         Container.Bind<ObjectPool<Enemy>>().AsSingle().WithArguments(enemyContainer.transform, enemyPoolCapacity)
             .OnInstantiated<ObjectPool<Enemy>>((c, p) => p.Initialize());
-        Container.BindInterfacesAndSelfTo<BaseSpawner<Enemy>>().AsSingle();
+        Container.BindInterfacesAndSelfTo<Spawner<Enemy>>().AsSingle();
     }
 
     private void InstallBullets()
@@ -36,6 +36,6 @@ public class WarehouseInstaller : MonoInstaller
         Container.Bind<BaseFabric<Bullet>>().To<BulletFabric>().AsSingle();
         Container.Bind<ObjectPool<Bullet>>().AsSingle().WithArguments(bulletContainer.transform, bulletPoolCapacity)
             .OnInstantiated<ObjectPool<Bullet>>((c, p) => p.Initialize());
-        Container.BindInterfacesAndSelfTo<BaseSpawner<Bullet>>().AsSingle();
+        Container.BindInterfacesAndSelfTo<Spawner<Bullet>>().AsSingle();
     }
 }

@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Collider2D _groundChecker;
     [SerializeField] private Transform _bulletSpawnPoint;
 
-    private BaseSpawner<Bullet> _bulletSpawner;
+    private Spawner<Bullet> _bulletSpawner;
     private Rigidbody2D _rigidbody2D;
 
     private void Awake()
@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(BaseSpawner<Bullet> spawner)
+    public void Construct(Spawner<Bullet> spawner)
     {
         _bulletSpawner = spawner;
     }
