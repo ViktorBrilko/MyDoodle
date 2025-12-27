@@ -4,8 +4,7 @@ using Zenject;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _jumpForce;
-    [SerializeField] private float _speed;
+    private PlayerConfig _config;
     [SerializeField] private Collider2D _groundChecker;
     [SerializeField] private Transform _bulletSpawnPoint;
 
@@ -18,19 +17,20 @@ public class Player : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(Spawner<Bullet> spawner)
+    public void Construct(PlayerConfig config, Spawner<Bullet> spawner)
     {
+        _config = config;
         _bulletSpawner = spawner;
     }
 
     public void Move(float direction)
     {
-        transform.Translate(new Vector3(direction, 0, 0) * _speed * Time.deltaTime);
+        transform.Translate(new Vector3(direction, 0, 0) * _config.Speed * Time.deltaTime);
     }
 
     public void Fire()
     {
-        _bulletSpawner.SpawnItem(_bulletSpawnPoint);
+        _bulletSpawner.SpawnItem(_bulletSpawnPoint.position);
     }
 
     private bool IsGrounded()
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         if (IsGrounded())
         {
             Vector2 velocity = _rigidbody2D.velocity;
-            velocity.y = _jumpForce;
+            velocity.y = _config.JumpForce;
             _rigidbody2D.velocity = velocity;
         }
     }

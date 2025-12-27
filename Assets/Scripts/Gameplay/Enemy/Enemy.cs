@@ -1,7 +1,8 @@
+using Gameplay;
 using UnityEngine;
 using Zenject;
 
-public class Enemy : MonoBehaviour, IResetable
+public class Enemy : MonoBehaviour, IResetable, IDespawnable
 {
     private int _health;
     private int _maxHealth;
@@ -34,5 +35,10 @@ public class Enemy : MonoBehaviour, IResetable
     public void Reset()
     {
         _health = _maxHealth;
+    }
+
+    public void Despawn()
+    {
+        _signalBus.Fire(new ResetSignal<Enemy>(this));
     }
 }

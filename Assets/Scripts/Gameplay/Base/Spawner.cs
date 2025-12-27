@@ -10,8 +10,8 @@ namespace Gameplay
         private ObjectPool<T> _pool;
         private SignalBus _signalBus;
 
-        public Spawner(ObjectPool<T> pool, SignalBus signalBus)
-        {
+        public Spawner(ObjectPool<T> pool, SignalBus signalBus) {
+           
             _pool = pool;
             _signalBus = signalBus;
         }
@@ -26,7 +26,7 @@ namespace Gameplay
             _signalBus.Subscribe<ResetSignal<T>>(OnItemDestroy);
         }
 
-        public void SpawnItem(Transform spawnPoint)
+        public T SpawnItem(Vector3 spawnPoint)
         {
             T newItem;
 
@@ -40,12 +40,14 @@ namespace Gameplay
             }
 
             SetItem(newItem, spawnPoint);
+            
+            return newItem;
         }
 
-        private void SetItem(T item, Transform spawnPoint)
+        private void SetItem(T item, Vector3 spawnPoint)
         {
             item.gameObject.SetActive(true);
-            item.transform.position = spawnPoint.position;
+            item.transform.position = spawnPoint;
         }
 
         private void OnItemDestroy(ResetSignal<T> signal)

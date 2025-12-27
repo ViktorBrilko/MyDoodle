@@ -1,3 +1,4 @@
+using Gameplay.Chunks;
 using UnityEngine;
 using Zenject;
 
@@ -6,10 +7,16 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
 {
     [SerializeField] private BulletConfig _bulletConfig;
     [SerializeField] private EnemyConfig _enemyConfig;
+    [SerializeField] private PlatformConfig _platformConfig;
+    [SerializeField] private ChunkConfig _chunkConfig;
+    [SerializeField] private PlayerConfig _playerConfig;
     
     public override void InstallBindings()
     {
         Container.BindInstance(_bulletConfig).AsSingle();
         Container.BindInstance(_enemyConfig).AsSingle();
+        Container.BindInstance(_platformConfig).AsSingle();
+        Container.BindInstance(_chunkConfig).AsSingle();
+        Container.BindInstance(_playerConfig).AsSingle();
     }
 }

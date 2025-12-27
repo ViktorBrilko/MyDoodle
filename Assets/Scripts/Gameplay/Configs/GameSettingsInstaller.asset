@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletConfig: {fileID: 11400000, guid: 55777c18f9b408844801c83c85f6a3ed, type: 2}
   _enemyConfig: {fileID: 11400000, guid: b7701cf3dd2a00845847f3a1aaea5676, type: 2}
+  _platformConfig: {fileID: 11400000, guid: 5d985bcb5a9668a4296084374e7db77a, type: 2}
+  _chunkConfig: {fileID: 11400000, guid: 4259ebc5004873c48a2b526bde536dd7, type: 2}
+  _playerConfig: {fileID: 11400000, guid: 344b9d9a95405f94b9d4c23204db8035, type: 2}
