@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Gameplay;
 using UnityEngine;
@@ -8,11 +7,10 @@ public class Chunk : MonoBehaviour, IResetable
 {
     private SignalBus _signalBus;
     private float _yCameraOffset;
-    public List<IDespawnable> items = new();
-
+    private List<IDespawnable> items = new();
 
     [Inject]
-    public void Construct(float yCameraOffset, SignalBus signalBus)
+    public void Construct( float yCameraOffset, SignalBus signalBus)
     {
         _yCameraOffset = yCameraOffset;
         _signalBus = signalBus;
@@ -24,25 +22,16 @@ public class Chunk : MonoBehaviour, IResetable
     }
 
     private void Update()
-    {Debug.Log("WorldToViewportPoint " + Camera.main.WorldToViewportPoint(transform.position).y);
-        //не сильно ресурсоемко? 
+    {
         if (CheckChunkVisibility())
         {
+            Debug.Log("TurnOff");
             TurnOff();
         }
     }
 
-    //удали
-    private void Start()
-    {
-        Debug.Log("Camera.main.transform.position.y " + Camera.main.transform.position.y);
-        Debug.Log("transform.position.y " + transform.position.y);
-        
-    }
-
     private bool CheckChunkVisibility()
     {
-        //правильная проверка?
         return Camera.main.WorldToViewportPoint(transform.position).y <= _yCameraOffset;
     }
 

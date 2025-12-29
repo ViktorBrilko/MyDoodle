@@ -11,7 +11,6 @@ namespace Gameplay.Chunks
         [SerializeField] private int _changeYChance;
         [SerializeField] private int _leaveYChance;
         [SerializeField] private int _bigChangeYChance;
-        [SerializeField] private float _stepY;
         [SerializeField] private int _bigChangeY;
         [SerializeField] private int _defaultChangeY;
         [SerializeField] private float _yCameraOffset;
@@ -19,7 +18,6 @@ namespace Gameplay.Chunks
 
         public int InitialChunksCount => _initialChunksCount;
         public float YCameraOffset => _yCameraOffset;
-        public float StepY => _stepY;
         public float ChunkHeight => _chunkHeight;
         public int ChangeYChance => _changeYChance;
         public int LeaveYChance => _leaveYChance;

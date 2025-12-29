@@ -12,8 +12,7 @@ namespace Gameplay
             Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x;
 
         private float leftSideOfScreenInWorld = Camera.main.ScreenToWorldPoint(new Vector2(0f, 0f)).x;
-
-        private float _stepY;
+      
         private float _chunkHeight;
         private int _changeYChance;
         private int _leaveYChance;
@@ -33,7 +32,8 @@ namespace Gameplay
         private Transform _chunkStartPoint;
         private PlayerConfig _playerConfig;
 
-        public ChunkGenerator(ObjectPool<Chunk> pool, PlayerConfig playerConfig, Transform chunkStartPoint, Spawner<Enemy> enemySpawner,
+        public ChunkGenerator(ObjectPool<Chunk> pool, PlayerConfig playerConfig, Transform chunkStartPoint,
+            Spawner<Enemy> enemySpawner,
             Spawner<Platform> platformSpawner, ChunkConfig chunkConfig, SignalBus signalBus)
         {
             _enemySpawner = enemySpawner;
@@ -43,13 +43,12 @@ namespace Gameplay
             _playerConfig = playerConfig;
             _spawnPosition = _chunkStartPoint.position;
             _pool = pool;
-
-            _stepY = chunkConfig.StepY;
+          
             _chunkHeight = chunkConfig.ChunkHeight;
             _changeYChance = chunkConfig.ChangeYChance;
             _leaveYChance = chunkConfig.LeaveYChance;
             _bigChangeYChance = chunkConfig.BigChangeYChance;
-            _initialChunksCount  = chunkConfig.InitialChunksCount;
+            _initialChunksCount = chunkConfig.InitialChunksCount;
 
             _bigChangeY = chunkConfig.BigChangeY;
             _defaultChangeY = chunkConfig.DefaultChangeY;
@@ -57,7 +56,6 @@ namespace Gameplay
 
         private void SpawnChunk(Vector3 position)
         {
-            Debug.Log("SpawnChunk");
             _pool.TryGetObject(out Chunk chunk);
             chunk.gameObject.SetActive(true);
             chunk.transform.position = position;
@@ -71,8 +69,12 @@ namespace Gameplay
             while (_currentY <= _chunkHeight)
             {
                 Vector3 platformPosition = new Vector3(Random.Range(rightSideOfScreenInWorld, leftSideOfScreenInWorld),
-                    _currentY, 0);
-                Platform platform = _platformSpawner.SpawnItem(platformPosition);
+                    _currentY, chunk.transform.position.z);
+               
+                Platform platform = _platformSpawner.SpawnItem(new Vector3());
+                platform.transform.SetParent(chunk.transform);
+                platform.transform.localPosition = platformPosition;
+            
                 chunk.Add(platform);
 
                 _currentY += ChangeYRow();

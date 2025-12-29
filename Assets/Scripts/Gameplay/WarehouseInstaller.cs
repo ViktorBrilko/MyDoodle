@@ -1,3 +1,4 @@
+using Cinemachine;
 using Gameplay;
 using Gameplay.Chunks;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class WarehouseInstaller : MonoInstaller
     [SerializeField] private int _chunkPoolCapacity;
     [SerializeField] private Transform _chunkStartPoint;
     [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _playerCameraPrefab;
     [SerializeField] private Transform _playerStartPoint;
 
     public override void InstallBindings()
@@ -21,16 +23,28 @@ public class WarehouseInstaller : MonoInstaller
         Container.DeclareSignal<ResetSignal<Platform>>();
         Container.DeclareSignal<ResetSignal<Bullet>>();
 
+        InstallCamera();
         InstallBullets();
-        Container.InstantiatePrefab(_playerPrefab, _playerStartPoint.transform.position, Quaternion.identity, null);
+        InstallPlayer();
         InstallEnemies();
         InstallPlatforms();
         InstallChunks();
     }
 
+    private void InstallCamera()
+    {
+        Container.Bind<CinemachineVirtualCamera>().FromComponentInNewPrefab(_playerCameraPrefab)
+            .AsSingle().NonLazy();
+    }
+
+    private void InstallPlayer()
+    {
+        Container.Bind<Player>().FromComponentInNewPrefab(_playerPrefab).UnderTransform(_playerStartPoint.transform)
+            .AsSingle().NonLazy();
+    }
+
     private void InstallChunks()
     {
-        
         GameObject chunkContainer = new("CHUNKS");
         Container.Bind<BaseFabric<Chunk>>().To<ChunkFabric>().AsSingle();
         Container.Bind<ObjectPool<Chunk>>().AsSingle().WithArguments(chunkContainer.transform, _chunkPoolCapacity)
@@ -49,7 +63,6 @@ public class WarehouseInstaller : MonoInstaller
 
     private void InstallPlatforms()
     {
-       
         GameObject platformContainer = new("PLATFORMS");
         Container.Bind<BaseFabric<Platform>>().To<PlatformFabric>().AsSingle();
         Container.Bind<ObjectPool<Platform>>().AsSingle()
@@ -60,7 +73,6 @@ public class WarehouseInstaller : MonoInstaller
 
     private void InstallBullets()
     {
-       
         GameObject bulletContainer = new("BULLETS");
         Container.Bind<BaseFabric<Bullet>>().To<BulletFabric>().AsSingle();
         Container.Bind<ObjectPool<Bullet>>().AsSingle().WithArguments(bulletContainer.transform, _bulletPoolCapacity)
