@@ -1,3 +1,4 @@
+using System;
 using Gameplay;
 using UnityEngine;
 using Zenject;
@@ -10,7 +11,7 @@ public class Platform : MonoBehaviour, IResetable, IDespawnable
     public void Construct(SignalBus signalBus)
     {
         _signalBus = signalBus;
-    }
+    }   
 
     public void Reset()
     {

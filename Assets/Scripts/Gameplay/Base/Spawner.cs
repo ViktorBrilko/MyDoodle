@@ -54,7 +54,7 @@ namespace Gameplay
         {
             T item = signal.Resetable;
             item.gameObject.SetActive(false);
-            item.transform.SetParent(null);
+            item.transform.SetParent(_pool.Container.transform);
             item.Reset();
         }
     }

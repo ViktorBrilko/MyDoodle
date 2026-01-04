@@ -15,7 +15,11 @@ namespace Gameplay.Chunks
         [SerializeField] private int _defaultChangeY;
         [SerializeField] private float _yCameraOffset;
         [SerializeField] private int _initialChunksCount;
+        [SerializeField] private int _maxPositionAttempts;
+        [SerializeField] private float _platformXDistanceCoef;
 
+        public float PlatformXDistanceCoef => _platformXDistanceCoef;
+        public int MaxPositionAttempts => _maxPositionAttempts;
         public int InitialChunksCount => _initialChunksCount;
         public float YCameraOffset => _yCameraOffset;
         public float ChunkHeight => _chunkHeight;

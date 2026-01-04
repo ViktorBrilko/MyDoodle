@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 6681849873801828220, guid: c7be989bd4ae4e14fadb6ea8bd88dcd1, type: 3}
   _chunkHeight: 20
-  _changeYChance: 60
-  _leaveYChance: 10
+  _changeYChance: 65
+  _leaveYChance: 5
   _bigChangeYChance: 30
-  _stepY: 0
   _bigChangeY: 2
   _defaultChangeY: 1
   _yCameraOffset: -2
   _initialChunksCount: 2
+  _maxPositionAttempts: 200
+  _platformXDistanceCoef: 0.2

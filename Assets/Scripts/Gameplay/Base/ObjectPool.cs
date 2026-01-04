@@ -10,6 +10,8 @@ public class ObjectPool<T> : IInitializable where T : Component
     private List<T> _pool = new();
     private Transform _container;
 
+    public Transform Container => _container;
+
     public ObjectPool(BaseFabric<T> fabric, Transform container, int capacity)
     {
         _fabric = fabric;
