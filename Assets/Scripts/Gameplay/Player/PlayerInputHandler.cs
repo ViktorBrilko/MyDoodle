@@ -7,7 +7,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void Update()
     {
         float direction = Input.GetAxis("Horizontal");
-        
+        Debug.Log(_player.GetComponent<Rigidbody2D>().velocity);
         _player.Move(direction);
 
         if (Input.GetKeyDown(KeyCode.E))

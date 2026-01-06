@@ -8,4 +8,5 @@ public class EnemyConfig : ScriptableObject
 
     public int Health => _health;
     public GameObject Prefab => _prefab;
+    public float Width => _prefab.gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
 }

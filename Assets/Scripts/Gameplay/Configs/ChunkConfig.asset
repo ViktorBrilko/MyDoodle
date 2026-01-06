@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 6681849873801828220, guid: c7be989bd4ae4e14fadb6ea8bd88dcd1, type: 3}
   _chunkHeight: 20
+  _yCameraOffset: -2
+  _initialChunksCount: 2
+  _maxPositionAttempts: 200
   _changeYChance: 65
   _leaveYChance: 5
   _bigChangeYChance: 30
   _bigChangeY: 2
   _defaultChangeY: 1
-  _yCameraOffset: -2
-  _initialChunksCount: 2
-  _maxPositionAttempts: 200
   _platformXDistanceCoef: 0.2
+  _platformStartYGeneration: 1
+  _maxEnemiesInChunk: 4
+  _minEnemiesInChunk: 0
+  _enemyStartYGeneration: 1

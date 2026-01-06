@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BulletConfig
   m_EditorClassIdentifier: 
   _damage: 5
-  _speed: 5
+  _speed: 8
   _maxLifetime: 3
   _prefab: {fileID: 1570120865947616967, guid: 91286d4afe9eaef438f124c630d2ad50, type: 3}
