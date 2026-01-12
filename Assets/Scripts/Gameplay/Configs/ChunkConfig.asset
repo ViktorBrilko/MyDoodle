@@ -17,9 +17,9 @@ MonoBehaviour:
   _yCameraOffset: -2
   _initialChunksCount: 2
   _maxPositionAttempts: 200
-  _changeYChance: 65
-  _leaveYChance: 5
-  _bigChangeYChance: 30
+  _changeYChance: 55
+  _leaveYChance: 20
+  _bigChangeYChance: 25
   _bigChangeY: 2
   _defaultChangeY: 1
   _platformXDistanceCoef: 0.2
@@ -27,3 +27,5 @@ MonoBehaviour:
   _maxEnemiesInChunk: 4
   _minEnemiesInChunk: 0
   _enemyStartYGeneration: 1
+  _maxYDistanceBetweenEnemies: 3
+  _minYDistanceBetweenEnemies: 6

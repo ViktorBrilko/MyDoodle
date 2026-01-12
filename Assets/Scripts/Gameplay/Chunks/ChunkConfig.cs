@@ -26,7 +26,11 @@ namespace Gameplay.Chunks
         [SerializeField] private int _maxEnemiesInChunk;
         [SerializeField] private int _minEnemiesInChunk;
         [SerializeField] private int _enemyStartYGeneration;
+        [SerializeField] private int _maxYDistanceBetweenEnemies;
+        [SerializeField] private int _minYDistanceBetweenEnemies;
 
+        public int MaxYDistanceBetweenEnemies => _maxYDistanceBetweenEnemies;
+        public int MinYDistanceBetweenEnemies => _minYDistanceBetweenEnemies;
         public int MinEnemiesInChunk => _minEnemiesInChunk;
         public int EnemyStartYGeneration => _enemyStartYGeneration;
         public int PlatformStartYGeneration => _platformStartYGeneration;

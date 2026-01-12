@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -8,21 +9,12 @@ public class Bullet : MonoBehaviour, IResetable
     private float _maxLifetime;
     private SignalBus _signalBus;
     
-    public float CurrentLifetime { get; set; }
+    public float CurrentLifetime { get; private set; }
 
     private void Update()
     {
         Move();
         CheckLifetime();
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.TryGetComponent(out Enemy enemy))
-        {
-            enemy.TakeDamage(_damage);
-            DestroyBullet();
-        }
     }
 
     [Inject]
@@ -39,6 +31,15 @@ public class Bullet : MonoBehaviour, IResetable
         CurrentLifetime += Time.deltaTime;
         if (CurrentLifetime >= _maxLifetime)
         {
+            DestroyBullet();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.TryGetComponent(out Enemy enemy))
+        {
+            enemy.TakeDamage(_damage);
             DestroyBullet();
         }
     }

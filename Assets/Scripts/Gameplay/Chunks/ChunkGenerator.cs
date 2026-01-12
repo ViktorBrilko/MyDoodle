@@ -34,6 +34,8 @@ namespace Gameplay
         private int _minEnemiesInChunk;
         private float _enemyWidthHalf;
         private int _enemyStartYGeneration;
+        private int _maxYDistanceBetweenEnemies;
+        private int _minYDistanceBetweenEnemies;
 
         public ChunkGenerator(ObjectPool<Chunk> pool, PlayerConfig playerConfig, Transform chunkStartPoint,
             Spawner<Enemy> enemySpawner, Spawner<Platform> platformSpawner, ChunkConfig chunkConfig,
@@ -64,6 +66,8 @@ namespace Gameplay
             _minEnemiesInChunk = chunkConfig.MinEnemiesInChunk;
             _enemyWidthHalf = enemyConfig.Width / 2;
             _enemyStartYGeneration = chunkConfig.EnemyStartYGeneration;
+            _maxYDistanceBetweenEnemies = chunkConfig.MaxYDistanceBetweenEnemies;
+            _minYDistanceBetweenEnemies = chunkConfig.MinYDistanceBetweenEnemies;
         }
 
         private void SpawnChunk(Vector3 position)
@@ -137,10 +141,14 @@ namespace Gameplay
                 enemy.transform.localPosition = candidatePosition;
                 chunk.Add(enemy, enemy.transform.localPosition);
                 enemiesInChunk++;
-                _currentY += ChangeYRow();
+                
+                int changeY = Random.Range(_minYDistanceBetweenEnemies, _maxYDistanceBetweenEnemies);
+                if (_currentY + changeY > _chunkHeight)
+                {
+                    changeY = _minYDistanceBetweenEnemies;
+                }
+                _currentY += changeY;
             }
-
-            _currentY = 1;
         }
 
         private void SpawnPlatforms(Chunk chunk)

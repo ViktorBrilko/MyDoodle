@@ -2,18 +2,23 @@ using Gameplay;
 using UnityEngine;
 using Zenject;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    private PlayerConfig _config;
     [SerializeField] private Collider2D _groundChecker;
     [SerializeField] private Transform _bulletSpawnPoint;
 
+    private PlayerConfig _config;
     private Spawner<Bullet> _bulletSpawner;
-    private Rigidbody2D _rigidbody2D;
+    private Rigidbody2D _rigidbody;
+    private bool _isAlive = true;
+    public Collider2D GroundChecker => _groundChecker;
+    public Rigidbody2D Rigidbody => _rigidbody;
+    public bool IsAlive => _isAlive;
 
     private void Awake()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     [Inject]
@@ -33,6 +38,13 @@ public class Player : MonoBehaviour
         _bulletSpawner.SpawnItem(_bulletSpawnPoint.position);
     }
 
+    public void Die()
+    {
+        GetComponent<PlayerInputHandler>().enabled = false;
+        _groundChecker.enabled = false;
+        _isAlive = false;
+    }
+
     private bool IsGrounded()
     {
         return _groundChecker.IsTouchingLayers(LayerMask.GetMask("Platform"))
@@ -41,11 +53,11 @@ public class Player : MonoBehaviour
 
     public void Jump()
     {
-        if (IsGrounded())
+        if (IsGrounded() && _rigidbody.velocity.y <= 0)
         {
-            Vector2 velocity = _rigidbody2D.velocity;
+            Vector2 velocity = _rigidbody.velocity;
             velocity.y = _config.JumpForce;
-            _rigidbody2D.velocity = velocity;
+            _rigidbody.velocity = velocity;
         }
     }
 }
