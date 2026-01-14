@@ -11,10 +11,6 @@ public class PlayerConfig : ScriptableObject
     private float _maxJumpHeight;
 
     public float JumpForce => _jumpForce;
-
-    public float JumpAidCoef => _jumpAidCoef;
-
     public float Speed => _speed;
-
     public float MaxJumpHeight => JumpForce * JumpForce / (2 * 9.81f * GravityScale) * _jumpAidCoef;
 }

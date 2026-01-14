@@ -1,4 +1,5 @@
 using Gameplay;
+using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 
@@ -9,14 +10,18 @@ public class Enemy : MonoBehaviour, IResetable, IDespawnable
     private int _health;
     private int _maxHealth;
     private SignalBus _signalBus;
+    private int _score;
+
+    public int Score => _score;
 
     [Inject]
-    public void Construct(int health, SignalBus signalBus)
+    public void Construct(int health, int score, SignalBus signalBus)
     {
         _health = health;
         _signalBus = signalBus;
 
         _maxHealth = _health;
+        _score = score;
     }
 
     public void TakeDamage(int damage)
@@ -40,7 +45,10 @@ public class Enemy : MonoBehaviour, IResetable, IDespawnable
             }
             else
             {
-                player.Die();
+                if (!player.IsInvincible)
+                {
+                    player.Die();
+                }
             }
         }
     }
@@ -48,6 +56,7 @@ public class Enemy : MonoBehaviour, IResetable, IDespawnable
     private void Die()
     {
         _signalBus.Fire(new ResetSignal<Enemy>(this));
+        _signalBus.Fire(new EnemyDeadSignal(this));
     }
 
     public void Reset()

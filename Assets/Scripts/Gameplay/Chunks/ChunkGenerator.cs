@@ -19,6 +19,7 @@ namespace Gameplay
         private SignalBus _signalBus;
         private PlayerConfig _playerConfig;
         private int _numberOfChunks;
+        private int _itemStartYGeneration;
 
         private Spawner<Platform> _platformSpawner;
         private int _leaveYChance;
@@ -27,13 +28,11 @@ namespace Gameplay
         private int _defaultChangeY;
         private float _platformWidthHalf;
         private float _platformXDistanceCoef;
-        private int _platformStartYGeneration;
 
         private Spawner<Enemy> _enemySpawner;
         private int _maxEnemiesInChunk;
         private int _minEnemiesInChunk;
         private float _enemyWidthHalf;
-        private int _enemyStartYGeneration;
         private int _maxYDistanceBetweenEnemies;
         private int _minYDistanceBetweenEnemies;
 
@@ -51,6 +50,7 @@ namespace Gameplay
             _initialChunksCount = chunkConfig.InitialChunksCount;
             _maxPositionAttempts = chunkConfig.MaxPositionAttempts;
             _chunkHeight = chunkConfig.ChunkHeight;
+            _itemStartYGeneration = chunkConfig.ItemStartYGeneration;
 
             _platformSpawner = platformSpawner;
             _leaveYChance = chunkConfig.LeaveYChance;
@@ -58,24 +58,32 @@ namespace Gameplay
             _bigChangeY = chunkConfig.BigChangeY;
             _defaultChangeY = chunkConfig.DefaultChangeY;
             _platformWidthHalf = platformConfig.Width / 2;
-            _platformXDistanceCoef = platformConfig.Width * chunkConfig.PlatformXDistanceCoef;
-            _platformStartYGeneration = chunkConfig.PlatformStartYGeneration;
+            _platformXDistanceCoef = platformConfig.Width + chunkConfig.PlatformXDistanceCoef;
 
             _enemySpawner = enemySpawner;
             _maxEnemiesInChunk = chunkConfig.MaxEnemiesInChunk;
             _minEnemiesInChunk = chunkConfig.MinEnemiesInChunk;
             _enemyWidthHalf = enemyConfig.Width / 2;
-            _enemyStartYGeneration = chunkConfig.EnemyStartYGeneration;
             _maxYDistanceBetweenEnemies = chunkConfig.MaxYDistanceBetweenEnemies;
             _minYDistanceBetweenEnemies = chunkConfig.MinYDistanceBetweenEnemies;
         }
 
         private void SpawnChunk(Vector3 position)
         {
-            _pool.TryGetObject(out Chunk chunk);
-            chunk.gameObject.SetActive(true);
-            chunk.transform.position = position;
-            FillChunk(chunk);
+            Chunk newChunk;
+
+            if (_pool.TryGetObject(out Chunk chunk))
+            {
+                newChunk = chunk;
+            }
+            else
+            {
+                newChunk = _pool.AddNewItem();
+            }
+
+            newChunk.gameObject.SetActive(true);
+            newChunk.transform.position = position;
+            FillChunk(newChunk);
 
             _chunkSpawnPosition.y += _chunkHeight;
             _numberOfChunks++;
@@ -94,10 +102,10 @@ namespace Gameplay
 
         private void SpawnEnemies(Chunk chunk)
         {
-            _currentY = _enemyStartYGeneration;
+            _currentY = _itemStartYGeneration;
             int maxEnemies = Random.Range(_minEnemiesInChunk, _maxEnemiesInChunk + 1);
             int enemiesInChunk = 0;
-            
+
             while (_currentY <= _chunkHeight && enemiesInChunk < maxEnemies)
             {
                 bool isValidPosition = false;
@@ -141,20 +149,21 @@ namespace Gameplay
                 enemy.transform.localPosition = candidatePosition;
                 chunk.Add(enemy, enemy.transform.localPosition);
                 enemiesInChunk++;
-                
+
                 int changeY = Random.Range(_minYDistanceBetweenEnemies, _maxYDistanceBetweenEnemies);
                 if (_currentY + changeY > _chunkHeight)
                 {
                     changeY = _minYDistanceBetweenEnemies;
                 }
+
                 _currentY += changeY;
             }
         }
 
         private void SpawnPlatforms(Chunk chunk)
         {
-            _currentY = _platformStartYGeneration;
-            
+            _currentY = _itemStartYGeneration;
+
             while (_currentY <= _chunkHeight)
             {
                 bool isValidPosition = false;

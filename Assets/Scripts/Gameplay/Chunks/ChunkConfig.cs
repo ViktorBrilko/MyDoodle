@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Gameplay.Chunks
 {
@@ -12,6 +11,7 @@ namespace Gameplay.Chunks
         [SerializeField] private float _yCameraOffset;
         [SerializeField] private int _initialChunksCount;
         [SerializeField] private int _maxPositionAttempts;
+        [SerializeField] private int _itemStartYGeneration;
        
         [Header("Platforms")]
         [SerializeField] private int _changeYChance;
@@ -20,20 +20,17 @@ namespace Gameplay.Chunks
         [SerializeField] private int _bigChangeY;
         [SerializeField] private int _defaultChangeY;
         [SerializeField] private float _platformXDistanceCoef;
-        [SerializeField] private int _platformStartYGeneration;
         
         [Header("Enemies")]
         [SerializeField] private int _maxEnemiesInChunk;
         [SerializeField] private int _minEnemiesInChunk;
-        [SerializeField] private int _enemyStartYGeneration;
         [SerializeField] private int _maxYDistanceBetweenEnemies;
         [SerializeField] private int _minYDistanceBetweenEnemies;
 
         public int MaxYDistanceBetweenEnemies => _maxYDistanceBetweenEnemies;
         public int MinYDistanceBetweenEnemies => _minYDistanceBetweenEnemies;
         public int MinEnemiesInChunk => _minEnemiesInChunk;
-        public int EnemyStartYGeneration => _enemyStartYGeneration;
-        public int PlatformStartYGeneration => _platformStartYGeneration;
+        public int ItemStartYGeneration => _itemStartYGeneration;
         public int MaxEnemiesInChunk => _maxEnemiesInChunk;
         public float PlatformXDistanceCoef => _platformXDistanceCoef;
         public int MaxPositionAttempts => _maxPositionAttempts;

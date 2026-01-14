@@ -1,6 +1,7 @@
 using Cinemachine;
 using Gameplay;
 using Gameplay.Chunks;
+using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 
@@ -22,6 +23,7 @@ public class WarehouseInstaller : MonoInstaller
         Container.DeclareSignal<ResetSignal<Enemy>>();
         Container.DeclareSignal<ResetSignal<Platform>>();
         Container.DeclareSignal<ResetSignal<Bullet>>();
+        Container.DeclareSignal<EnemyDeadSignal>();
 
         InstallCamera();
         InstallBullets();

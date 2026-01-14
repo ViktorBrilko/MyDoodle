@@ -14,7 +14,7 @@ public class EnemyFabric : BaseFabric<Enemy>
     public override Enemy Create(Transform parent)
     {
         Enemy enemy = Container.InstantiatePrefabForComponent<Enemy>(_enemyConfig.Prefab, parent,
-            new object[] { _enemyConfig.Health });
+            new object[] { _enemyConfig.Health, _enemyConfig.Score });
 
         return enemy;
     }

@@ -10,6 +10,7 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     [SerializeField] private PlatformConfig _platformConfig;
     [SerializeField] private ChunkConfig _chunkConfig;
     [SerializeField] private PlayerConfig _playerConfig;
+    [SerializeField] private BoostConfig _boostConfig;
     
     public override void InstallBindings()
     {
@@ -18,5 +19,6 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
         Container.BindInstance(_platformConfig).AsSingle();
         Container.BindInstance(_chunkConfig).AsSingle();
         Container.BindInstance(_playerConfig).AsSingle();
+        Container.BindInstance(_boostConfig).AsSingle();
     }
 }
