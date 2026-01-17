@@ -12,15 +12,14 @@ public class Player : MonoBehaviour
     [SerializeField] private Collider2D _groundChecker;
     [SerializeField] private Transform _bulletSpawnPoint;
 
-    private SignalBus _signalBus;
     private PlayerConfig _playerConfig;
     private Spawner<Bullet> _bulletSpawner;
-    private int _score;
     private Rigidbody2D _rigidbody;
     private SpriteRenderer _renderer;
     private bool _isAlive = true;
     private bool _isInvincible;
-    
+    private SignalBus _signalBus;
+
     public bool IsInvincible => _isInvincible;
     public Collider2D GroundChecker => _groundChecker;
     public Rigidbody2D Rigidbody => _rigidbody;
@@ -32,19 +31,10 @@ public class Player : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
     }
 
-    private void OnEnable()
-    {
-        _signalBus.Subscribe<EnemyDeadSignal>(OnEnemyDeath);
-    }
-
-    private void OnDisable()
-    {
-        _signalBus.Unsubscribe<EnemyDeadSignal>(OnEnemyDeath);
-    }
-
     [Inject]
     public void Construct(SignalBus signalBus, PlayerConfig config, Spawner<Bullet> spawner)
     {
+        transform.SetParent(null);
         _playerConfig = config;
         _bulletSpawner = spawner;
         _signalBus = signalBus;
@@ -53,11 +43,6 @@ public class Player : MonoBehaviour
     public void Move(float direction)
     {
         transform.Translate(new Vector3(direction, 0, 0) * _playerConfig.Speed * Time.deltaTime);
-    }
-
-    private void OnEnemyDeath(EnemyDeadSignal signal)
-    {
-        AddScore(signal.Enemy.Score);
     }
 
     public void BecomeInvincible(int invincibilityTime)
@@ -75,11 +60,6 @@ public class Player : MonoBehaviour
         _isInvincible = false;
     }
 
-    public void AddScore(int score)
-    {
-        _score += score;
-    }
-
     public void Fire()
     {
         _bulletSpawner.SpawnItem(_bulletSpawnPoint.position);
@@ -90,6 +70,7 @@ public class Player : MonoBehaviour
         GetComponent<PlayerInputHandler>().enabled = false;
         _groundChecker.enabled = false;
         _isAlive = false;
+        _signalBus.Fire(new PlayerDiedSignal());
     }
 
     private bool IsGrounded()

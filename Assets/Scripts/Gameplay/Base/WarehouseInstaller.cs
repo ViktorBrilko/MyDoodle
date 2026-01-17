@@ -24,6 +24,7 @@ public class WarehouseInstaller : MonoInstaller
         Container.DeclareSignal<ResetSignal<Platform>>();
         Container.DeclareSignal<ResetSignal<Bullet>>();
         Container.DeclareSignal<EnemyDeadSignal>();
+        Container.DeclareSignal<PlayerDiedSignal>();
 
         InstallCamera();
         InstallBullets();

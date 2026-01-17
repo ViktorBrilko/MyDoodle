@@ -13,7 +13,7 @@ public class Chunk : MonoBehaviour, IResetable
     public List<Vector2> ItemsPositions => _itemsPositions;
 
     [Inject]
-    public void Construct( float yCameraOffset, SignalBus signalBus)
+    public void Construct(float yCameraOffset, SignalBus signalBus)
     {
         _yCameraOffset = yCameraOffset;
         _signalBus = signalBus;
