@@ -36,9 +36,14 @@ namespace Gameplay
         private int _maxYDistanceBetweenEnemies;
         private int _minYDistanceBetweenEnemies;
 
+        private Spawner<Spring> _springSpawner;
+        private int _maxSpringsInChunk;
+        private int _minSpringsInChunk;
+        private int _springedPlatformChance;
+
         public ChunkGenerator(ObjectPool<Chunk> pool, PlayerConfig playerConfig, Transform chunkStartPoint,
             Spawner<Enemy> enemySpawner, Spawner<Platform> platformSpawner, ChunkConfig chunkConfig,
-            PlatformConfig platformConfig, EnemyConfig enemyConfig, SignalBus signalBus)
+            PlatformConfig platformConfig, EnemyConfig enemyConfig, SignalBus signalBus, Spawner<Spring> springSpawner)
         {
             _rightSideOfScreenInWorld =
                 Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x;
@@ -66,6 +71,11 @@ namespace Gameplay
             _enemyWidthHalf = enemyConfig.Width / 2;
             _maxYDistanceBetweenEnemies = chunkConfig.MaxYDistanceBetweenEnemies;
             _minYDistanceBetweenEnemies = chunkConfig.MinYDistanceBetweenEnemies;
+
+            _springSpawner = springSpawner;
+            _maxSpringsInChunk = chunkConfig.MaxSpringsInChunk;
+            _minSpringsInChunk  = chunkConfig.MinSpringsInChunk;
+            _springedPlatformChance = chunkConfig.SpringedPlatformChance;
         }
 
         private void SpawnChunk(Vector3 position)
@@ -163,6 +173,8 @@ namespace Gameplay
         private void SpawnPlatforms(Chunk chunk)
         {
             _currentY = _itemStartYGeneration;
+            int maxSprings = Random.Range(_minSpringsInChunk, _maxSpringsInChunk + 1);
+            int springsInChunk = 0;
 
             while (_currentY <= _chunkHeight)
             {
@@ -202,12 +214,35 @@ namespace Gameplay
                 }
 
                 Platform platform = _platformSpawner.SpawnItem(candidatePosition);
+
+                if (springsInChunk < maxSprings)
+                {
+                    TrySpawnSpring(platform);
+                    springsInChunk++;
+                }
+
                 platform.transform.SetParent(chunk.transform);
 
                 platform.transform.localPosition = candidatePosition;
                 chunk.Add(platform, platform.transform.localPosition);
                 _currentY += ChangeYRow();
             }
+        }
+
+        private void TrySpawnSpring(Platform platform)
+        {
+            int chance = Random.Range(0, 100);
+            if (chance < _springedPlatformChance)
+            {
+                SpawnSpring(platform);
+            }
+        }
+
+        private void SpawnSpring(Platform platform)
+        {
+            Spring spring = _springSpawner.SpawnItem(new Vector3());
+            spring.transform.SetParent(platform.transform);
+            spring.transform.localPosition = platform.SpringPosition;
         }
 
         private int ChangeYRow()

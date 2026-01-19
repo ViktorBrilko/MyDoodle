@@ -12,7 +12,8 @@ public class PlatformFabric : BaseFabric<Platform>
 
     public override Platform Create(Transform parent)
     {
-       Platform platform = Container.InstantiatePrefabForComponent<Platform>(_platformConfig.Prefab, parent);
+        Platform platform = Container.InstantiatePrefabForComponent<Platform>(_platformConfig.Prefab, parent,
+            new object[] { _platformConfig.SpringPosition});
 
         return platform;
     }

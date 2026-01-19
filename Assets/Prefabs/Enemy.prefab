@@ -174,7 +174,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 4596384423190649227}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fe908921fdd42044d8bbe390fc5c2173, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -194,7 +194,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -216,7 +216,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fe908921fdd42044d8bbe390fc5c2173, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9647c2c47bc841138b796b6a1e882d40, type: 3}
-  m_Name: PlatformConfig
+  m_Script: {fileID: 11500000, guid: a37aa0343a59433bb722896f75c86ba4, type: 3}
+  m_Name: SpringConfig
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 5073522903638172604, guid: fa7c81f8c87ec194c8a9bbab13d5c1e2, type: 3}
-  _springPosition: {x: 0, y: 0.5, z: 1}
+  _prefab: {fileID: 3643571024684921058, guid: 940d2c28d4a6b0444966750c8c481f66, type: 3}
+  _jumpForce: 15

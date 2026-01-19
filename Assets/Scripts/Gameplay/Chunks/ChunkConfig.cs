@@ -27,6 +27,11 @@ namespace Gameplay.Chunks
         [SerializeField] private int _maxYDistanceBetweenEnemies;
         [SerializeField] private int _minYDistanceBetweenEnemies;
 
+        [Header("Springs")]
+        [SerializeField] private int _maxSpringsInChunk;
+        [SerializeField] private int _minSpringsInChunk;
+        [SerializeField] private int _springedPlatformChance;
+
         public int MaxYDistanceBetweenEnemies => _maxYDistanceBetweenEnemies;
         public int MinYDistanceBetweenEnemies => _minYDistanceBetweenEnemies;
         public int MinEnemiesInChunk => _minEnemiesInChunk;
@@ -43,5 +48,11 @@ namespace Gameplay.Chunks
         public int BigChangeY => _bigChangeY;
         public int DefaultChangeY => _defaultChangeY;
         public GameObject Prefab => _prefab;
+
+        public int MaxSpringsInChunk => _maxSpringsInChunk;
+
+        public int MinSpringsInChunk => _minSpringsInChunk;
+
+        public int SpringedPlatformChance => _springedPlatformChance;
     }
 }

@@ -28,3 +28,6 @@ MonoBehaviour:
   _minEnemiesInChunk: 0
   _maxYDistanceBetweenEnemies: 3
   _minYDistanceBetweenEnemies: 6
+  _maxSpringsInChunk: 2
+  _minSpringsInChunk: 1
+  _springedPlatformChance: 20

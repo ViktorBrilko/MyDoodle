@@ -11,6 +11,7 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     [SerializeField] private ChunkConfig _chunkConfig;
     [SerializeField] private PlayerConfig _playerConfig;
     [SerializeField] private BoostConfig _boostConfig;
+    [SerializeField] private SpringConfig _springConfig;
     
     public override void InstallBindings()
     {
@@ -20,5 +21,6 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
         Container.BindInstance(_chunkConfig).AsSingle();
         Container.BindInstance(_playerConfig).AsSingle();
         Container.BindInstance(_boostConfig).AsSingle();
+        Container.BindInstance(_springConfig).AsSingle();
     }
 }

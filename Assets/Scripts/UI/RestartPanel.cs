@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class Restart : MonoBehaviour
+public class RestartPanel : MonoBehaviour
 {
     [SerializeField] private GameObject _restartPanel;
 

@@ -28,7 +28,7 @@ public class Chunk : MonoBehaviour, IResetable
     private void Update()
     {
         if (CheckChunkVisibility())
-        {       
+        {
             TurnOff();
         }
     }

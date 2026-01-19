@@ -2,7 +2,6 @@
 using Gameplay.Signals;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace UI

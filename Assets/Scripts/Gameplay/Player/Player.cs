@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Gameplay;
 using Gameplay.Signals;
@@ -9,6 +10,9 @@ using Zenject;
 [RequireComponent(typeof(PlayerInputHandler))]
 public class Player : MonoBehaviour
 {
+    private const string PLATFORM_LAYER_NAME = "Platform";
+    private const string ENEMY_LAYER_NAME = "Enemy";
+
     [SerializeField] private Collider2D _groundChecker;
     [SerializeField] private Transform _bulletSpawnPoint;
 
@@ -19,6 +23,8 @@ public class Player : MonoBehaviour
     private bool _isAlive = true;
     private bool _isInvincible;
     private SignalBus _signalBus;
+    private int _platfromLayerNumber;
+    private int _enemyLayerNumber;
 
     public bool IsInvincible => _isInvincible;
     public Collider2D GroundChecker => _groundChecker;
@@ -29,6 +35,9 @@ public class Player : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<SpriteRenderer>();
+
+        _platfromLayerNumber = LayerMask.GetMask(PLATFORM_LAYER_NAME);
+        _enemyLayerNumber = LayerMask.GetMask(ENEMY_LAYER_NAME);
     }
 
     [Inject]
@@ -38,6 +47,11 @@ public class Player : MonoBehaviour
         _playerConfig = config;
         _bulletSpawner = spawner;
         _signalBus = signalBus;
+    }
+
+    private void Update()
+    {
+        Debug.Log(_rigidbody.velocity.x); 
     }
 
     public void Move(float direction)
@@ -75,8 +89,8 @@ public class Player : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return _groundChecker.IsTouchingLayers(LayerMask.GetMask("Platform"))
-               || _groundChecker.IsTouchingLayers(LayerMask.GetMask("Enemy"));
+        return _groundChecker.IsTouchingLayers(_platfromLayerNumber)
+               || _groundChecker.IsTouchingLayers(_enemyLayerNumber);
     }
 
     public void Jump()
@@ -85,6 +99,20 @@ public class Player : MonoBehaviour
         {
             Vector2 velocity = _rigidbody.velocity;
             velocity.y = _playerConfig.JumpForce;
+            velocity.x = 0;
+            _rigidbody.velocity = velocity;
+        }
+    }
+
+    public void SpecialJump(float jumpForce, int layerMask)
+    {
+        bool groundedOnLayer = _groundChecker.IsTouchingLayers(layerMask);
+
+        if (groundedOnLayer && _rigidbody.velocity.y <= 0)
+        {
+            Vector2 velocity = _rigidbody.velocity;
+            velocity.y = jumpForce;
+            velocity.x = 0;
             _rigidbody.velocity = velocity;
         }
     }

@@ -11,6 +11,7 @@ public class WarehouseInstaller : MonoInstaller
     [SerializeField] private int _enemyPoolCapacity;
     [SerializeField] private int _platformPoolCapacity;
     [SerializeField] private int _chunkPoolCapacity;
+    [SerializeField] private int _springPoolCapacity;
     [SerializeField] private Transform _chunkStartPoint;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private GameObject _playerCameraPrefab;
@@ -23,6 +24,7 @@ public class WarehouseInstaller : MonoInstaller
         Container.DeclareSignal<ResetSignal<Enemy>>();
         Container.DeclareSignal<ResetSignal<Platform>>();
         Container.DeclareSignal<ResetSignal<Bullet>>();
+        Container.DeclareSignal<ResetSignal<Spring>>();
         Container.DeclareSignal<EnemyDeadSignal>();
         Container.DeclareSignal<PlayerDiedSignal>();
 
@@ -31,6 +33,7 @@ public class WarehouseInstaller : MonoInstaller
         InstallPlayer();
         InstallEnemies();
         InstallPlatforms();
+        InstallSprings();
         InstallChunks();
     }
 
@@ -72,6 +75,16 @@ public class WarehouseInstaller : MonoInstaller
             .WithArguments(platformContainer.transform, _platformPoolCapacity)
             .OnInstantiated<ObjectPool<Platform>>((c, p) => p.Initialize());
         Container.BindInterfacesAndSelfTo<Spawner<Platform>>().AsSingle();
+    }
+    
+    private void InstallSprings()
+    {
+        GameObject springContainer = new("SPRINGS");
+        Container.Bind<BaseFabric<Spring>>().To<SpringFabric>().AsSingle();
+        Container.Bind<ObjectPool<Spring>>().AsSingle()
+            .WithArguments(springContainer.transform, _springPoolCapacity)
+            .OnInstantiated<ObjectPool<Spring>>((c, p) => p.Initialize());
+        Container.BindInterfacesAndSelfTo<Spawner<Spring>>().AsSingle();
     }
 
     private void InstallBullets()

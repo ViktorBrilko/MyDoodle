@@ -1085,6 +1085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _background: {fileID: 528283548}
   _pausedBackgroundColor: {r: 0.6886792, g: 0.41190812, b: 0.41190812, a: 1}
+  _pausedButton: {fileID: 841257904}
 --- !u!1 &1205918650
 GameObject:
   m_ObjectHideFlags: 0
@@ -1948,6 +1949,7 @@ MonoBehaviour:
   _enemyPoolCapacity: 20
   _platformPoolCapacity: 20
   _chunkPoolCapacity: 3
+  _springPoolCapacity: 5
   _chunkStartPoint: {fileID: 1380408248}
   _playerPrefab: {fileID: 8521278173104872723, guid: 4f563599deb2f7645ad925dcead5a166, type: 3}
   _playerCameraPrefab: {fileID: 4287670287489680032, guid: fde4317f7fdd32a428399a91a57cbe08, type: 3}
