@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Gameplay;
 using Gameplay.Signals;
@@ -40,6 +39,11 @@ public class Player : MonoBehaviour
         _enemyLayerNumber = LayerMask.GetMask(ENEMY_LAYER_NAME);
     }
 
+    private void Start()
+    {
+        _rigidbody.gravityScale = _playerConfig.GravityScale;
+    }
+
     [Inject]
     public void Construct(SignalBus signalBus, PlayerConfig config, Spawner<Bullet> spawner)
     {
@@ -47,11 +51,6 @@ public class Player : MonoBehaviour
         _playerConfig = config;
         _bulletSpawner = spawner;
         _signalBus = signalBus;
-    }
-
-    private void Update()
-    {
-        Debug.Log(_rigidbody.velocity.x); 
     }
 
     public void Move(float direction)

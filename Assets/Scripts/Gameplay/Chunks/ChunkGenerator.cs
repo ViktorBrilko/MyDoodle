@@ -43,7 +43,8 @@ namespace Gameplay
 
         public ChunkGenerator(ObjectPool<Chunk> pool, PlayerConfig playerConfig, Transform chunkStartPoint,
             Spawner<Enemy> enemySpawner, Spawner<Platform> platformSpawner, ChunkConfig chunkConfig,
-            PlatformConfig platformConfig, EnemyConfig enemyConfig, SignalBus signalBus, Spawner<Spring> springSpawner)
+            SignalBus signalBus, Spawner<Spring> springSpawner,
+            GameObject enemyPrefab, GameObject platformPrefab)
         {
             _rightSideOfScreenInWorld =
                 Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x;
@@ -62,19 +63,19 @@ namespace Gameplay
             _bigChangeYChance = chunkConfig.BigChangeYChance;
             _bigChangeY = chunkConfig.BigChangeY;
             _defaultChangeY = chunkConfig.DefaultChangeY;
-            _platformWidthHalf = platformConfig.Width / 2;
-            _platformXDistanceCoef = platformConfig.Width + chunkConfig.PlatformXDistanceCoef;
+            _platformWidthHalf = platformPrefab.GetComponent<SpriteRenderer>().bounds.size.x / 2;
+            _platformXDistanceCoef = _platformWidthHalf + chunkConfig.PlatformXDistanceCoef;
 
             _enemySpawner = enemySpawner;
             _maxEnemiesInChunk = chunkConfig.MaxEnemiesInChunk;
             _minEnemiesInChunk = chunkConfig.MinEnemiesInChunk;
-            _enemyWidthHalf = enemyConfig.Width / 2;
+            _enemyWidthHalf = enemyPrefab.GetComponent<SpriteRenderer>().bounds.size.x / 2;
             _maxYDistanceBetweenEnemies = chunkConfig.MaxYDistanceBetweenEnemies;
             _minYDistanceBetweenEnemies = chunkConfig.MinYDistanceBetweenEnemies;
 
             _springSpawner = springSpawner;
             _maxSpringsInChunk = chunkConfig.MaxSpringsInChunk;
-            _minSpringsInChunk  = chunkConfig.MinSpringsInChunk;
+            _minSpringsInChunk = chunkConfig.MinSpringsInChunk;
             _springedPlatformChance = chunkConfig.SpringedPlatformChance;
         }
 

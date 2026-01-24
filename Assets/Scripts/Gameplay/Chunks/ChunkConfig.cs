@@ -1,58 +1,29 @@
-﻿using UnityEngine;
+﻿using System;
 
 namespace Gameplay.Chunks
 {
-    [CreateAssetMenu(menuName = "GameConfigs/ChunkConfig", fileName = "Configs")]
-    public class ChunkConfig : ScriptableObject
+    [Serializable]
+    public class ChunkConfig
     {
-        [Header("Main")]
-        [SerializeField] private GameObject _prefab;
-        [SerializeField] private float _chunkHeight;
-        [SerializeField] private float _yCameraOffset;
-        [SerializeField] private int _initialChunksCount;
-        [SerializeField] private int _maxPositionAttempts;
-        [SerializeField] private int _itemStartYGeneration;
-       
-        [Header("Platforms")]
-        [SerializeField] private int _changeYChance;
-        [SerializeField] private int _leaveYChance;
-        [SerializeField] private int _bigChangeYChance;
-        [SerializeField] private int _bigChangeY;
-        [SerializeField] private int _defaultChangeY;
-        [SerializeField] private float _platformXDistanceCoef;
-        
-        [Header("Enemies")]
-        [SerializeField] private int _maxEnemiesInChunk;
-        [SerializeField] private int _minEnemiesInChunk;
-        [SerializeField] private int _maxYDistanceBetweenEnemies;
-        [SerializeField] private int _minYDistanceBetweenEnemies;
+        public float ChunkHeight { get; set; }
+        public float YCameraOffset { get; set; }
+        public int InitialChunksCount { get; set; }
+        public int MaxPositionAttempts { get; set; }
+        public int ItemStartYGeneration { get; set; }
 
-        [Header("Springs")]
-        [SerializeField] private int _maxSpringsInChunk;
-        [SerializeField] private int _minSpringsInChunk;
-        [SerializeField] private int _springedPlatformChance;
+        public int LeaveYChance { get; set; }
+        public int BigChangeYChance { get; set; }
+        public int BigChangeY { get; set; }
+        public int DefaultChangeY { get; set; }
+        public float PlatformXDistanceCoef { get; set; }
 
-        public int MaxYDistanceBetweenEnemies => _maxYDistanceBetweenEnemies;
-        public int MinYDistanceBetweenEnemies => _minYDistanceBetweenEnemies;
-        public int MinEnemiesInChunk => _minEnemiesInChunk;
-        public int ItemStartYGeneration => _itemStartYGeneration;
-        public int MaxEnemiesInChunk => _maxEnemiesInChunk;
-        public float PlatformXDistanceCoef => _platformXDistanceCoef;
-        public int MaxPositionAttempts => _maxPositionAttempts;
-        public int InitialChunksCount => _initialChunksCount;
-        public float YCameraOffset => _yCameraOffset;
-        public float ChunkHeight => _chunkHeight;
-        public int ChangeYChance => _changeYChance;
-        public int LeaveYChance => _leaveYChance;
-        public int BigChangeYChance => _bigChangeYChance;
-        public int BigChangeY => _bigChangeY;
-        public int DefaultChangeY => _defaultChangeY;
-        public GameObject Prefab => _prefab;
+        public int MaxEnemiesInChunk { get; set; }
+        public int MinEnemiesInChunk { get; }
+        public int MaxYDistanceBetweenEnemies { get; set; }
+        public int MinYDistanceBetweenEnemies { get; set; }
 
-        public int MaxSpringsInChunk => _maxSpringsInChunk;
-
-        public int MinSpringsInChunk => _minSpringsInChunk;
-
-        public int SpringedPlatformChance => _springedPlatformChance;
+        public int MaxSpringsInChunk { get; set; }
+        public int MinSpringsInChunk { get; set; }
+        public int SpringedPlatformChance { get; set; }
     }
 }

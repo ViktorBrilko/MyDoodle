@@ -1,14 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
 
-[CreateAssetMenu(menuName = "GameConfigs/EnemyConfig", fileName = "Configs")]
-public class EnemyConfig : ScriptableObject
+[Serializable]
+public class EnemyConfig 
 {
-    [SerializeField] private int _health;
-    [SerializeField] private GameObject _prefab;
-    [SerializeField] private int _score;
-
-    public int Score => _score;
-    public int Health => _health;
-    public GameObject Prefab => _prefab;
-    public float Width => _prefab.gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
+    public int Score  { get; set; } 
+    public int Health  { get; set; } 
 }

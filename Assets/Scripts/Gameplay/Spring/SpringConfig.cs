@@ -1,10 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
 
-[CreateAssetMenu(menuName = "GameConfigs/SpringConfig", fileName = "Configs")]
-public class SpringConfig : ScriptableObject
+[Serializable]
+public class SpringConfig
 {
-    [SerializeField] private GameObject _prefab;
-    [SerializeField] private float _jumpForce;
-    public GameObject Prefab => _prefab;
-    public float JumpForce => _jumpForce;
+    public float JumpForce { get; set; }
 }

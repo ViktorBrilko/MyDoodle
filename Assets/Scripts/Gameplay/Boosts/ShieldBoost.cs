@@ -3,10 +3,10 @@ using Zenject;
 
 public class ShieldBoost : MonoBehaviour
 {
-    private BoostConfig _config;
+    private ShieldConfig _config;
 
     [Inject]
-    public void Construct(BoostConfig config)
+    public void Construct(ShieldConfig config)
     {
         _config = config;
     }

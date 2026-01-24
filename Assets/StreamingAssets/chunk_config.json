@@ -1,0 +1,19 @@
+{
+  "ChunkHeight": 20,
+  "YCameraOffset": -2,
+  "InitialChunksCount": 2,
+  "MaxPositionAttempts": 200,
+  "ItemStartYGeneration": 1,
+  "LeaveYChance": 20,
+  "BigChangeYChance": 25,
+  "BigChangeY": 2,
+  "DefaultChangeY": 1,
+  "PlatformXDistanceCoef": 0.2,
+  "MaxEnemiesInChunk": 4,
+  "MinEnemiesInChunk": 0,
+  "MaxYDistanceBetweenEnemies": 3,
+  "MinYDistanceBetweenEnemies": 6,
+  "MaxSpringsInChunk": 2,
+  "MinSpringsInChunk": 1,
+  "SpringedPlatformChance": 20
+}

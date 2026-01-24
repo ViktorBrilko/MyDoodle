@@ -4,6 +4,7 @@ using Zenject;
 
 namespace Gameplay
 {
+    [Serializable]
     public class Spawner<T> : IInitializable, IDisposable
         where T : Component, IResetable
     {

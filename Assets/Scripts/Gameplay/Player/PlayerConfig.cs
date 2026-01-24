@@ -1,16 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using Newtonsoft.Json;
 
-[CreateAssetMenu(menuName = "GameConfigs/PlayerConfig", fileName = "Configs")]
-public class PlayerConfig : ScriptableObject
+[Serializable]
+public class PlayerConfig
 {
-    [SerializeField] private float _jumpForce;
-    [SerializeField] private float _speed;
-    [SerializeField] private float GravityScale;
-    [SerializeField] private float _jumpAidCoef;
-
-    private float _maxJumpHeight;
-
-    public float JumpForce => _jumpForce;
-    public float Speed => _speed;
-    public float MaxJumpHeight => JumpForce * JumpForce / (2 * 9.81f * GravityScale) * _jumpAidCoef;
+    public float JumpForce { get; set; }
+    public float Speed { get; set; }
+    public float JumpAidCoef { get; set; }
+    public float GravityScale { get; set; }
+    
+    [JsonIgnore]
+    public float MaxJumpHeight => JumpForce * JumpForce / (2 * 9.81f * GravityScale) * JumpAidCoef;
 }

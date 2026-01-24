@@ -1885,7 +1885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers:
-  - {fileID: 11400000, guid: 0cbbd924081a2744385bf6e961d0233d, type: 2}
+  - {fileID: 0}
   _monoInstallers:
   - {fileID: 2111360716}
   - {fileID: 2111360715}
@@ -1951,9 +1951,15 @@ MonoBehaviour:
   _chunkPoolCapacity: 3
   _springPoolCapacity: 5
   _chunkStartPoint: {fileID: 1380408248}
+  _playerStartPoint: {fileID: 1340246783}
   _playerPrefab: {fileID: 8521278173104872723, guid: 4f563599deb2f7645ad925dcead5a166, type: 3}
   _playerCameraPrefab: {fileID: 4287670287489680032, guid: fde4317f7fdd32a428399a91a57cbe08, type: 3}
-  _playerStartPoint: {fileID: 1340246783}
+  _bulletPrefab: {fileID: 1570120865947616967, guid: 91286d4afe9eaef438f124c630d2ad50, type: 3}
+  _enemyPrefab: {fileID: 4596384423190649227, guid: 3be98a19794bea2409db9451661eaf14, type: 3}
+  _platformPrefab: {fileID: 5073522903638172604, guid: fa7c81f8c87ec194c8a9bbab13d5c1e2, type: 3}
+  _springPrefab: {fileID: 3643571024684921058, guid: 940d2c28d4a6b0444966750c8c481f66, type: 3}
+  _shieldPrefab: {fileID: 3172460620455698369, guid: 3e3f0bc63c9b66c41a4cf8c87b0d2232, type: 3}
+  _chunkPrefab: {fileID: 6681849873801828220, guid: c7be989bd4ae4e14fadb6ea8bd88dcd1, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
