@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay;
 using UnityEngine;
 using Zenject;
 
 public class ObjectPool<T> : IInitializable where T : Component
 {
     private int _capacity;
-    private BaseFabric<T> _fabric;
+    private IFabric<T> _fabric;
     private List<T> _pool = new();
     private Transform _container;
 
     public Transform Container => _container;
 
-    public ObjectPool(BaseFabric<T> fabric, Transform container, int capacity)
+    public ObjectPool(IFabric<T> fabric, Transform container, int capacity)
     {
         _fabric = fabric;
         _capacity = capacity;

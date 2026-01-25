@@ -17,11 +17,11 @@ public class Bullet : MonoBehaviour, IResetable
     }
 
     [Inject]
-    public void Construct(int speed, int damage, float maxLifetime, SignalBus signalBus)
+    public void Construct(BulletConfig config, SignalBus signalBus)
     {
-        _speed = speed;
-        _damage = damage;
-        _maxLifetime = maxLifetime;
+        _speed = config.Speed;
+        _damage = config.Damage;
+        _maxLifetime = config.MaxLifetime;
         _signalBus = signalBus;
     }
     

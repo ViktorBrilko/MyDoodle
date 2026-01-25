@@ -3,7 +3,7 @@
 namespace Gameplay.Chunks
 {
     [Serializable]
-    public class ChunkConfig
+    public class ChunkConfig 
     {
         public float ChunkHeight { get; set; }
         public float YCameraOffset { get; set; }

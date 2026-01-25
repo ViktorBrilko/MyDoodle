@@ -1,4 +1,5 @@
 ﻿using System;
+using Gameplay;
 
 [Serializable]
 public class EnemyConfig 

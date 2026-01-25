@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Gameplay;
+using Gameplay.Chunks;
 using UnityEngine;
 using Zenject;
 
@@ -13,9 +14,9 @@ public class Chunk : MonoBehaviour, IResetable
     public List<Vector2> ItemsPositions => _itemsPositions;
 
     [Inject]
-    public void Construct(float yCameraOffset, SignalBus signalBus)
+    public void Construct(ChunkConfig config, SignalBus signalBus)
     {
-        _yCameraOffset = yCameraOffset;
+        _yCameraOffset = config.YCameraOffset;
         _signalBus = signalBus;
     }
 

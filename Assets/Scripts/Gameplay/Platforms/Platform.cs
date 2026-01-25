@@ -10,10 +10,10 @@ public class Platform : MonoBehaviour, IResetable, IDespawnable
     public Vector3 SpringPosition => _springPosition;
 
     [Inject]
-    public void Construct(SignalBus signalBus, Vector3 springPosition)
+    public void Construct(SignalBus signalBus, PlatformConfig config)
     {
         _signalBus = signalBus;
-        _springPosition = springPosition;
+        _springPosition = config.SpringPosition;
     }   
 
     public void Reset()

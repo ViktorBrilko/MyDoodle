@@ -66,7 +66,7 @@ public class WarehouseInstaller : MonoInstaller
     {
         GameObject chunkContainer = new("CHUNKS");
         Container.Bind<ChunkConfig>().FromInstance(_provider.ChunkCfg).AsSingle();
-        Container.Bind<BaseFabric<Chunk>>().To<ChunkFabric>().AsSingle().WithArguments(_chunkPrefab);
+        Container.Bind<IFabric<Chunk>>().To<Fabric<Chunk, ChunkConfig>>().AsSingle().WithArguments(_chunkPrefab);
         Container.Bind<ObjectPool<Chunk>>().AsSingle().WithArguments(chunkContainer.transform, _chunkPoolCapacity)
             .OnInstantiated<ObjectPool<Chunk>>((c, p) => p.Initialize());
         Container.BindInterfacesAndSelfTo<ChunkGenerator>().AsSingle().WithArguments(_chunkStartPoint, _enemyPrefab, _platformPrefab);
@@ -76,7 +76,7 @@ public class WarehouseInstaller : MonoInstaller
     {
         GameObject enemyContainer = new("ENEMIES");
         Container.Bind<EnemyConfig>().FromInstance(_provider.EnemyCfg).AsSingle();
-        Container.Bind<BaseFabric<Enemy>>().To<EnemyFabric>().AsSingle().WithArguments(_enemyPrefab);
+        Container.Bind<IFabric<Enemy>>().To<Fabric<Enemy, EnemyConfig>>().AsSingle().WithArguments(_enemyPrefab);
         Container.Bind<ObjectPool<Enemy>>().AsSingle().WithArguments(enemyContainer.transform, _enemyPoolCapacity)
             .OnInstantiated<ObjectPool<Enemy>>((c, p) => p.Initialize());
         Container.BindInterfacesAndSelfTo<Spawner<Enemy>>().AsSingle();
@@ -86,7 +86,7 @@ public class WarehouseInstaller : MonoInstaller
     {
         GameObject platformContainer = new("PLATFORMS");
         Container.Bind<PlatformConfig>().FromInstance(_provider.PlatformCfg).AsSingle();
-        Container.Bind<BaseFabric<Platform>>().To<PlatformFabric>().AsSingle().WithArguments(_platformPrefab);
+        Container.Bind<IFabric<Platform>>().To<Fabric<Platform, PlatformConfig>>().AsSingle().WithArguments(_platformPrefab);        
         Container.Bind<ObjectPool<Platform>>().AsSingle()
             .WithArguments(platformContainer.transform, _platformPoolCapacity)
             .OnInstantiated<ObjectPool<Platform>>((c, p) => p.Initialize());
@@ -97,7 +97,7 @@ public class WarehouseInstaller : MonoInstaller
     {
         GameObject springContainer = new("SPRINGS");
         Container.Bind<SpringConfig>().FromInstance(_provider.SpringCfg).AsSingle();
-        Container.Bind<BaseFabric<Spring>>().To<SpringFabric>().AsSingle().WithArguments(_springPrefab);
+        Container.Bind<IFabric<Spring>>().To<Fabric<Spring, SpringConfig>>().AsSingle().WithArguments(_springPrefab);
         Container.Bind<ObjectPool<Spring>>().AsSingle()
             .WithArguments(springContainer.transform, _springPoolCapacity)
             .OnInstantiated<ObjectPool<Spring>>((c, p) => p.Initialize());
@@ -108,7 +108,7 @@ public class WarehouseInstaller : MonoInstaller
     {
         GameObject bulletContainer = new("BULLETS");
         Container.Bind<BulletConfig>().FromInstance(_provider.BulletCfg).AsSingle();
-        Container.Bind<BaseFabric<Bullet>>().To<BulletFabric>().AsSingle().WithArguments(_bulletPrefab);
+        Container.Bind<IFabric<Bullet>>().To<Fabric<Bullet, BulletConfig>>().AsSingle().WithArguments(_bulletPrefab);
         Container.Bind<ObjectPool<Bullet>>().AsSingle().WithArguments(bulletContainer.transform, _bulletPoolCapacity)
             .OnInstantiated<ObjectPool<Bullet>>((c, p) => p.Initialize());
         Container.BindInterfacesAndSelfTo<Spawner<Bullet>>().AsSingle();

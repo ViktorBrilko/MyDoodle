@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class BulletConfig
+public class BulletConfig 
 {
     public int Damage { get; set; } 
     public int Speed { get; set; }

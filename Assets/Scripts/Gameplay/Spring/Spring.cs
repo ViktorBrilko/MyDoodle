@@ -1,4 +1,3 @@
-using System;
 using Gameplay;
 using UnityEngine;
 using Zenject;
@@ -12,9 +11,9 @@ public class Spring : MonoBehaviour, IResetable, IDespawnable
    private int _springLayerNumber;
    
    [Inject]
-   public void Construct(float jumpForce, SignalBus signalBus)
+   public void Construct(SpringConfig config, SignalBus signalBus)
    {
-      _jumpForce = jumpForce;
+      _jumpForce = config.JumpForce;
       _signalBus = signalBus;
       
       _springLayerNumber = LayerMask.GetMask(SPRING_LAYER_NAME);

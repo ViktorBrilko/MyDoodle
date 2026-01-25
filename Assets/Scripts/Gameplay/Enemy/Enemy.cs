@@ -15,13 +15,13 @@ public class Enemy : MonoBehaviour, IResetable, IDespawnable
     public int Score => _score;
 
     [Inject]
-    public void Construct(int health, int score, SignalBus signalBus)
+    public void Construct(EnemyConfig config, SignalBus signalBus)
     {
-        _health = health;
+        _health = config.Health;
         _signalBus = signalBus;
-
+        _score = config.Score;
+        
         _maxHealth = _health;
-        _score = score;
     }
 
     public void TakeDamage(int damage)
