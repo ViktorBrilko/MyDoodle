@@ -17,9 +17,9 @@ namespace Gameplay
         private float _currentY;
         private ObjectPool<Chunk> _pool;
         private SignalBus _signalBus;
-        private PlayerConfig _playerConfig;
-        private int _numberOfChunks;
+        private int _numberOfChunk;
         private int _itemStartYGeneration;
+        private ChunkConfig _config;
 
         private Spawner<Platform> _platformSpawner;
         private int _leaveYChance;
@@ -37,26 +37,27 @@ namespace Gameplay
         private int _minYDistanceBetweenEnemies;
 
         private Spawner<Spring> _springSpawner;
-        private int _maxSpringsInChunk;
-        private int _minSpringsInChunk;
         private int _springedPlatformChance;
+        private float _lastSpringYPosition;
 
-        public ChunkGenerator(ObjectPool<Chunk> pool, PlayerConfig playerConfig, Transform chunkStartPoint,
+        private Spawner<ShieldBoost> _shieldSpawner;
+
+        public ChunkGenerator(ObjectPool<Chunk> pool, Transform chunkStartPoint,
             Spawner<Enemy> enemySpawner, Spawner<Platform> platformSpawner, ChunkConfig chunkConfig,
-            SignalBus signalBus, Spawner<Spring> springSpawner,
+            SignalBus signalBus, Spawner<Spring> springSpawner, Spawner<ShieldBoost> shieldSpawner,
             GameObject enemyPrefab, GameObject platformPrefab)
         {
             _rightSideOfScreenInWorld =
                 Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x;
             _leftSideOfScreenInWorld = Camera.main.ScreenToWorldPoint(new Vector2(0f, 0f)).x;
             _signalBus = signalBus;
-            _playerConfig = playerConfig;
             _chunkSpawnPosition = chunkStartPoint.position;
             _pool = pool;
             _initialChunksCount = chunkConfig.InitialChunksCount;
             _maxPositionAttempts = chunkConfig.MaxPositionAttempts;
             _chunkHeight = chunkConfig.ChunkHeight;
             _itemStartYGeneration = chunkConfig.ItemStartYGeneration;
+            _config = chunkConfig;
 
             _platformSpawner = platformSpawner;
             _leaveYChance = chunkConfig.LeaveYChance;
@@ -74,9 +75,9 @@ namespace Gameplay
             _minYDistanceBetweenEnemies = chunkConfig.MinYDistanceBetweenEnemies;
 
             _springSpawner = springSpawner;
-            _maxSpringsInChunk = chunkConfig.MaxSpringsInChunk;
-            _minSpringsInChunk = chunkConfig.MinSpringsInChunk;
             _springedPlatformChance = chunkConfig.SpringedPlatformChance;
+
+            _shieldSpawner = shieldSpawner;
         }
 
         private void SpawnChunk(Vector3 position)
@@ -96,8 +97,10 @@ namespace Gameplay
             newChunk.transform.position = position;
             FillChunk(newChunk);
 
+
             _chunkSpawnPosition.y += _chunkHeight;
-            _numberOfChunks++;
+            newChunk.endOfChunk.transform.position = new Vector3(0, _chunkSpawnPosition.y, 1);
+            _numberOfChunk++;
         }
 
         private void FillChunk(Chunk chunk)
@@ -105,7 +108,7 @@ namespace Gameplay
             SpawnPlatforms(chunk);
 
             //чтобы сразу в первом чанке не спавнить врагов
-            if (_numberOfChunks != 0)
+            if (_numberOfChunk != 0)
             {
                 SpawnEnemies(chunk);
             }
@@ -150,7 +153,7 @@ namespace Gameplay
 
                     if (attempts >= _maxPositionAttempts)
                     {
-                        Debug.Log("Количество попыток исчерпано");
+                        Debug.Log("Количество попыток разместить врага исчерпано");
                     }
                 }
 
@@ -174,8 +177,7 @@ namespace Gameplay
         private void SpawnPlatforms(Chunk chunk)
         {
             _currentY = _itemStartYGeneration;
-            int maxSprings = Random.Range(_minSpringsInChunk, _maxSpringsInChunk + 1);
-            int springsInChunk = 0;
+            _lastSpringYPosition = 0;
 
             while (_currentY <= _chunkHeight)
             {
@@ -210,17 +212,14 @@ namespace Gameplay
 
                     if (attempts >= _maxPositionAttempts)
                     {
-                        Debug.Log("Количество попыток исчерпано");
+                        Debug.Log("Количество попыток разместить платформу исчерпано");
                     }
                 }
 
                 Platform platform = _platformSpawner.SpawnItem(candidatePosition);
 
-                if (springsInChunk < maxSprings)
-                {
-                    TrySpawnSpring(platform);
-                    springsInChunk++;
-                }
+                TrySpawnSpring(platform, chunk);
+                TrySpawnBoost(platform, chunk);
 
                 platform.transform.SetParent(chunk.transform);
 
@@ -230,44 +229,55 @@ namespace Gameplay
             }
         }
 
-        private void TrySpawnSpring(Platform platform)
+        private void TrySpawnSpring(Platform platform, Chunk chunk)
         {
-            int chance = Random.Range(0, 100);
-            if (chance < _springedPlatformChance)
-            {
-                SpawnSpring(platform);
-            }
-        }
+            if (chunk.SpringsInChunk >= chunk.MaxSpringsInChunk || platform.IsOccupied) return;
+            
+            if(_currentY - _lastSpringYPosition < _config.MinYDistanceBetweenSprings) return;
 
-        private void SpawnSpring(Platform platform)
-        {
+            int chance = Random.Range(0, 100);
+            if (chance > _springedPlatformChance) return;
+
             Spring spring = _springSpawner.SpawnItem(new Vector3());
             spring.transform.SetParent(platform.transform);
+            platform.Add(spring);
             spring.transform.localPosition = platform.SpringPosition;
+            platform.IsOccupied = true;
+            _lastSpringYPosition = _currentY;
+            chunk.SpringsInChunk++;
+        }
+
+        private void TrySpawnBoost(Platform platform, Chunk chunk)
+        {
+            if (chunk.BoostsInChunk >= _config.MaxBoosts || platform.IsOccupied) return;
+
+            int chance = Random.Range(0, 100);
+            if (chance > _config.BoostedPlatformChance) return;
+
+            ShieldBoost shield = _shieldSpawner.SpawnItem(new Vector3());
+            shield.transform.SetParent(platform.transform);
+            platform.Add(shield);
+            platform.IsOccupied = true;
+            shield.transform.localPosition = platform.ShieldPosition;
+            chunk.BoostsInChunk++;
         }
 
         private int ChangeYRow()
         {
             int chance = Random.Range(0, 100);
-            float emptyRows = 0;
-            int res = 0;
+            int res = _defaultChangeY;
 
-            if (_leaveYChance < chance && chance <= _bigChangeYChance)
+            if (chance >= 0 && chance <= _leaveYChance)
             {
-                if (emptyRows < _playerConfig.MaxJumpHeight)
-                {
-                    emptyRows += _defaultChangeY;
-                    //ряд меняется на несколько и часть из них остаются пустыми
-                    return _bigChangeY;
-                }
+                //ряд не меняется
+                res = 0;
             }
-            else
+            else if (_leaveYChance < chance && chance <= _bigChangeYChance)
             {
-                //ряд меняется на дефолтное значение
-                res = _defaultChangeY;
+                //ряд меняется на несколько и часть из них остаются пустыми
+                return _bigChangeY;
             }
 
-            emptyRows = 0;
             return res;
         }
 

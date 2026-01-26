@@ -12,6 +12,7 @@ public class WarehouseInstaller : MonoInstaller
     [SerializeField] private int _platformPoolCapacity;
     [SerializeField] private int _chunkPoolCapacity;
     [SerializeField] private int _springPoolCapacity;
+    [SerializeField] private int _shieldPoolCapacity;
     [SerializeField] private Transform _chunkStartPoint;
     [SerializeField] private Transform _playerStartPoint;
 
@@ -34,6 +35,7 @@ public class WarehouseInstaller : MonoInstaller
         Container.DeclareSignal<ResetSignal<Platform>>();
         Container.DeclareSignal<ResetSignal<Bullet>>();
         Container.DeclareSignal<ResetSignal<Spring>>();
+        Container.DeclareSignal<ResetSignal<ShieldBoost>>();
         Container.DeclareSignal<EnemyDeadSignal>();
         Container.DeclareSignal<PlayerDiedSignal>();
 
@@ -47,6 +49,7 @@ public class WarehouseInstaller : MonoInstaller
         InstallPlatforms();
         InstallSprings();
         InstallChunks();
+        InstallShields();
     }
 
     private void InstallCamera()
@@ -60,6 +63,16 @@ public class WarehouseInstaller : MonoInstaller
         Container.Bind<Player>().FromComponentInNewPrefab(_playerPrefab).UnderTransform(_playerStartPoint.transform)
             .AsSingle().NonLazy();
         Container.Bind<PlayerConfig>().FromInstance(_provider.PlayerCfg).AsSingle();
+    }
+    
+    private void InstallShields()
+    {
+        GameObject shieldContainer = new("SHIELDS");
+        Container.Bind<ShieldConfig>().FromInstance(_provider.ShieldCfg).AsSingle();
+        Container.Bind<IFabric<ShieldBoost>>().To<Fabric<ShieldBoost, ShieldConfig>>().AsSingle().WithArguments(_shieldPrefab);
+        Container.Bind<ObjectPool<ShieldBoost>>().AsSingle().WithArguments(shieldContainer.transform, _shieldPoolCapacity)
+            .OnInstantiated<ObjectPool<ShieldBoost>>((c, p) => p.Initialize());
+        Container.BindInterfacesAndSelfTo<Spawner<ShieldBoost>>().AsSingle();
     }
 
     private void InstallChunks()

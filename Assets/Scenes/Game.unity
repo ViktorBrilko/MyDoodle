@@ -1949,6 +1949,7 @@ MonoBehaviour:
   _platformPoolCapacity: 20
   _chunkPoolCapacity: 3
   _springPoolCapacity: 5
+  _shieldPoolCapacity: 2
   _chunkStartPoint: {fileID: 1380408248}
   _playerStartPoint: {fileID: 1340246783}
   _playerPrefab: {fileID: 8521278173104872723, guid: 4f563599deb2f7645ad925dcead5a166, type: 3}

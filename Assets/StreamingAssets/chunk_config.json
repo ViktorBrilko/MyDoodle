@@ -4,7 +4,7 @@
   "InitialChunksCount": 2,
   "MaxPositionAttempts": 200,
   "ItemStartYGeneration": 1,
-  "LeaveYChance": 20,
+  "LeaveYChance": 15,
   "BigChangeYChance": 25,
   "BigChangeY": 2,
   "DefaultChangeY": 1,
@@ -13,7 +13,10 @@
   "MinEnemiesInChunk": 0,
   "MaxYDistanceBetweenEnemies": 3,
   "MinYDistanceBetweenEnemies": 6,
-  "MaxSpringsInChunk": 2,
-  "MinSpringsInChunk": 1,
-  "SpringedPlatformChance": 20
+  "MaxSprings": 2,
+  "MinSprings": 1,
+  "SpringedPlatformChance": 10,
+  "MinYDistanceBetweenSprings": 5,
+  "MaxBoosts" : 1,
+  "BoostedPlatformChance": 10
 }

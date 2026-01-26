@@ -22,8 +22,13 @@ namespace Gameplay.Chunks
         public int MaxYDistanceBetweenEnemies { get; set; }
         public int MinYDistanceBetweenEnemies { get; set; }
 
-        public int MaxSpringsInChunk { get; set; }
-        public int MinSpringsInChunk { get; set; }
+        public int MaxSprings { get; set; }
+        public int MinSprings { get; set; }
         public int SpringedPlatformChance { get; set; }
+        public int MinYDistanceBetweenSprings { get; set; }
+        
+        public int MaxBoosts { get; set; }
+        public int BoostedPlatformChance { get; set; }
+        
     }
 }

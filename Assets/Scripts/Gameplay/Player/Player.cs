@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
         GetComponent<PlayerInputHandler>().enabled = false;
         _groundChecker.enabled = false;
         _isAlive = false;
+        _isInvincible = false;
         _signalBus.Fire(new PlayerDiedSignal());
     }
 
