@@ -38,7 +38,7 @@ public class WarehouseInstaller : MonoInstaller
         Container.DeclareSignal<ResetSignal<BasePlatform>>();
         Container.DeclareSignal<ResetSignal<Bullet>>();
         Container.DeclareSignal<ResetSignal<Spring>>();
-        Container.DeclareSignal<ResetSignal<ShieldBoost>>();
+        Container.DeclareSignal<ResetSignal<Shield>>();
         Container.DeclareSignal<ResetSignal<BrokenPlatform>>();
         Container.DeclareSignal<EnemyDeadSignal>();
         Container.DeclareSignal<PlayerDiedSignal>();
@@ -73,10 +73,10 @@ public class WarehouseInstaller : MonoInstaller
     {
         GameObject shieldContainer = new("SHIELDS");
         Container.Bind<ShieldConfig>().FromInstance(_provider.ShieldCfg).AsSingle();
-        Container.Bind<IFabric<ShieldBoost>>().To<Fabric<ShieldBoost, ShieldConfig>>().AsSingle().WithArguments(_shieldPrefab);
-        Container.Bind<ObjectPool<ShieldBoost>>().AsSingle().WithArguments(shieldContainer.transform, _shieldPoolCapacity)
-            .OnInstantiated<ObjectPool<ShieldBoost>>((c, p) => p.Initialize());
-        Container.BindInterfacesAndSelfTo<Spawner<ShieldBoost>>().AsSingle();
+        Container.Bind<IFabric<Shield>>().To<Fabric<Shield, ShieldConfig>>().AsSingle().WithArguments(_shieldPrefab);
+        Container.Bind<ObjectPool<Shield>>().AsSingle().WithArguments(shieldContainer.transform, _shieldPoolCapacity)
+            .OnInstantiated<ObjectPool<Shield>>((c, p) => p.Initialize());
+        Container.BindInterfacesAndSelfTo<Spawner<Shield>>().AsSingle();
     }
 
     private void InstallChunks()

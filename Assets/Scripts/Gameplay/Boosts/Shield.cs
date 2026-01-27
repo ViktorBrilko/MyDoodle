@@ -2,7 +2,7 @@ using Gameplay;
 using UnityEngine;
 using Zenject;
 
-public class ShieldBoost : MonoBehaviour, IResetable, IDespawnable
+public class Shield : MonoBehaviour, IResetable, IDespawnable
 {
     private int _shieldInvincibilityTime;
     private SignalBus _signalBus;
@@ -19,7 +19,7 @@ public class ShieldBoost : MonoBehaviour, IResetable, IDespawnable
         if (other.TryGetComponent(out Player player))
         {
             player.BecomeInvincible(_shieldInvincibilityTime);
-			_signalBus.Fire(new ResetSignal<ShieldBoost>(this));
+			_signalBus.Fire(new ResetSignal<Shield>(this));
         }
     }
 
@@ -29,6 +29,6 @@ public class ShieldBoost : MonoBehaviour, IResetable, IDespawnable
 
     public void Despawn()
     {
-        _signalBus.Fire(new ResetSignal<ShieldBoost>(this));
+        _signalBus.Fire(new ResetSignal<Shield>(this));
     }
 }

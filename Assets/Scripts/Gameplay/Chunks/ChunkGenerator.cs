@@ -29,12 +29,12 @@ namespace Gameplay
         private Spawner<Spring> _springSpawner;
         private float _lastSpringYPosition;
 
-        private Spawner<ShieldBoost> _shieldSpawner;
+        private Spawner<Shield> _shieldSpawner;
 
         public ChunkGenerator(ObjectPool<Chunk> pool, Transform chunkStartPoint,
             Spawner<Enemy> enemySpawner, Spawner<BasePlatform> platformSpawner,
             Spawner<BrokenPlatform> brokenPlatformSpawner, ChunkConfig chunkConfig,
-            SignalBus signalBus, Spawner<Spring> springSpawner, Spawner<ShieldBoost> shieldSpawner,
+            SignalBus signalBus, Spawner<Spring> springSpawner, Spawner<Shield> shieldSpawner,
             GameObject enemyPrefab, GameObject platformPrefab)
         {
             _rightSideOfScreenInWorld =
@@ -45,7 +45,7 @@ namespace Gameplay
             _pool = pool;
             _config = chunkConfig;
             _platformWidthHalf = platformPrefab.GetComponent<SpriteRenderer>().bounds.size.x / 2;
-            _platformXDistanceCoef = _platformWidthHalf + chunkConfig.PlatformXDistanceCoef;
+            _platformXDistanceCoef = _platformWidthHalf * 2 + chunkConfig.PlatformXDistanceCoef;
             _enemyWidthHalf = enemyPrefab.GetComponent<SpriteRenderer>().bounds.size.x / 2;
             _enemySpawner = enemySpawner;
             _platformSpawner = platformSpawner;
@@ -107,10 +107,7 @@ namespace Gameplay
                             _leftSideOfScreenInWorld + _enemyWidthHalf),
                         _currentY, chunk.transform.position.z);
 
-                    if (chunk.ItemsPositions.Count == 0)
-                    {
-                        break;
-                    }
+                    if (chunk.ItemsPositions.Count == 0) break;
 
                     foreach (Vector2 existingPosition in chunk.ItemsPositions)
                     {
@@ -168,10 +165,7 @@ namespace Gameplay
                             _leftSideOfScreenInWorld + _platformWidthHalf),
                         _currentY, chunk.transform.position.z);
 
-                    if (chunk.ItemsPositions.Count == 0)
-                    {
-                        break;
-                    }
+                    if (chunk.ItemsPositions.Count == 0) break;
 
                     foreach (Vector2 existingPosition in chunk.ItemsPositions)
                     {
@@ -198,7 +192,7 @@ namespace Gameplay
                 if (chance < _config.BrokenPlatformChance && lastYChange != _config.BigChangeY && !isLastPlatformBroken)
                 {
                     platform = _brokenPlatformSpawner.SpawnItem(candidatePosition);
-                    isLastPlatformBroken =  true;
+                    isLastPlatformBroken = true;
                 }
                 else
                 {
@@ -248,7 +242,7 @@ namespace Gameplay
             int chance = Random.Range(0, 100);
             if (chance > _config.BoostedPlatformChance) return;
 
-            ShieldBoost shield = _shieldSpawner.SpawnItem(new Vector3());
+            Shield shield = _shieldSpawner.SpawnItem(new Vector3());
             shield.transform.SetParent(basePlatform.transform);
             basePlatform.Add(shield);
             basePlatform.IsOccupied = true;

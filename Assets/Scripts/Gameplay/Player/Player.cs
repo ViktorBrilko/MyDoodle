@@ -58,12 +58,13 @@ public class Player : MonoBehaviour
         transform.Translate(new Vector3(direction, 0, 0) * _playerConfig.Speed * Time.deltaTime);
     }
 
-    public void BecomeInvincible(int invincibilityTime)
+    public void BecomeInvincible(float invincibilityTime)
     {
+        StopCoroutine(InvincibilityRoutine(invincibilityTime));
         StartCoroutine(InvincibilityRoutine(invincibilityTime));
     }
 
-    private IEnumerator InvincibilityRoutine(int invincibilityTime)
+    private IEnumerator InvincibilityRoutine(float invincibilityTime)
     {
         _isInvincible = true;
         Color regularColor = _renderer.color;
