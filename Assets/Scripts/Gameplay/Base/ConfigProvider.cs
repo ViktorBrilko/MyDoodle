@@ -1,4 +1,5 @@
 ﻿using Gameplay.Chunks;
+using Gameplay.Platforms;
 using UnityEngine;
 
 namespace Gameplay
@@ -12,6 +13,7 @@ namespace Gameplay
         public SpringConfig SpringCfg { get; private set; }
         public ShieldConfig ShieldCfg { get; private set; }
         public ChunkConfig ChunkCfg { get; private set; }
+        public BrokenPlatformConfig BrokenPlatformCfg { get; private set; }
         
         public void LoadAll()
         {
@@ -22,6 +24,7 @@ namespace Gameplay
             SpringCfg = LoadFromFile<SpringConfig>("spring_config.json");
             ShieldCfg = LoadFromFile<ShieldConfig>("shield_config.json");
             ChunkCfg = LoadFromFile<ChunkConfig>("chunk_config.json");
+            BrokenPlatformCfg = LoadFromFile<BrokenPlatformConfig>("broken_platform_config.json");
         }
         
         private T LoadFromFile<T>(string fileName)

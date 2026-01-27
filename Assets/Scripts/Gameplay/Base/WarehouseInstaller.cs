@@ -1,6 +1,7 @@
 using Cinemachine;
 using Gameplay;
 using Gameplay.Chunks;
+using Gameplay.Platforms;
 using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
@@ -10,6 +11,7 @@ public class WarehouseInstaller : MonoInstaller
     [SerializeField] private int _bulletPoolCapacity;
     [SerializeField] private int _enemyPoolCapacity;
     [SerializeField] private int _platformPoolCapacity;
+    [SerializeField] private int _brokenPlatformPoolCapacity;
     [SerializeField] private int _chunkPoolCapacity;
     [SerializeField] private int _springPoolCapacity;
     [SerializeField] private int _shieldPoolCapacity;
@@ -21,6 +23,7 @@ public class WarehouseInstaller : MonoInstaller
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _platformPrefab;
+    [SerializeField] private GameObject _brokenPlatformPrefab;
     [SerializeField] private GameObject _springPrefab;
     [SerializeField] private GameObject _shieldPrefab;
     [SerializeField] private GameObject _chunkPrefab;
@@ -32,10 +35,11 @@ public class WarehouseInstaller : MonoInstaller
         SignalBusInstaller.Install(Container);
         Container.DeclareSignal<ResetSignal<Chunk>>();
         Container.DeclareSignal<ResetSignal<Enemy>>();
-        Container.DeclareSignal<ResetSignal<Platform>>();
+        Container.DeclareSignal<ResetSignal<BasePlatform>>();
         Container.DeclareSignal<ResetSignal<Bullet>>();
         Container.DeclareSignal<ResetSignal<Spring>>();
         Container.DeclareSignal<ResetSignal<ShieldBoost>>();
+        Container.DeclareSignal<ResetSignal<BrokenPlatform>>();
         Container.DeclareSignal<EnemyDeadSignal>();
         Container.DeclareSignal<PlayerDiedSignal>();
 
@@ -99,11 +103,19 @@ public class WarehouseInstaller : MonoInstaller
     {
         GameObject platformContainer = new("PLATFORMS");
         Container.Bind<PlatformConfig>().FromInstance(_provider.PlatformCfg).AsSingle();
-        Container.Bind<IFabric<Platform>>().To<Fabric<Platform, PlatformConfig>>().AsSingle().WithArguments(_platformPrefab);        
-        Container.Bind<ObjectPool<Platform>>().AsSingle()
+        Container.Bind<IFabric<BasePlatform>>().To<Fabric<BasePlatform, PlatformConfig>>().AsSingle().WithArguments(_platformPrefab);        
+        Container.Bind<ObjectPool<BasePlatform>>().AsSingle()
             .WithArguments(platformContainer.transform, _platformPoolCapacity)
-            .OnInstantiated<ObjectPool<Platform>>((c, p) => p.Initialize());
-        Container.BindInterfacesAndSelfTo<Spawner<Platform>>().AsSingle();
+            .OnInstantiated<ObjectPool<BasePlatform>>((c, p) => p.Initialize());
+        Container.BindInterfacesAndSelfTo<Spawner<BasePlatform>>().AsSingle();
+        
+        GameObject brokenPlatformContainer = new("BROKEN_PLATFORMS");
+        Container.Bind<BrokenPlatformConfig>().FromInstance(_provider.BrokenPlatformCfg).AsSingle();
+        Container.Bind<IFabric<BrokenPlatform>>().To<Fabric<BrokenPlatform, BrokenPlatformConfig>>().AsSingle().WithArguments(_brokenPlatformPrefab);        
+        Container.Bind<ObjectPool<BrokenPlatform>>().AsSingle()
+            .WithArguments(brokenPlatformContainer.transform, _brokenPlatformPoolCapacity)
+            .OnInstantiated<ObjectPool<BrokenPlatform>>((c, p) => p.Initialize());
+        Container.BindInterfacesAndSelfTo<Spawner<BrokenPlatform>>().AsSingle();
     }
 
     private void InstallSprings()

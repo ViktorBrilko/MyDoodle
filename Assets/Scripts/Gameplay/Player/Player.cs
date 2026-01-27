@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
 
     private PlayerConfig _playerConfig;
     private Spawner<Bullet> _bulletSpawner;
-    private Rigidbody2D _rigidbody;
+    private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _renderer;
     private bool _isAlive = true;
     private bool _isInvincible;
@@ -27,12 +27,12 @@ public class Player : MonoBehaviour
 
     public bool IsInvincible => _isInvincible;
     public Collider2D GroundChecker => _groundChecker;
-    public Rigidbody2D Rigidbody => _rigidbody;
+    public Rigidbody2D Rigidbody2D => _rigidbody2D;
     public bool IsAlive => _isAlive;
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<SpriteRenderer>();
 
         _platfromLayerNumber = LayerMask.GetMask(PLATFORM_LAYER_NAME);
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        _rigidbody.gravityScale = _playerConfig.GravityScale;
+        _rigidbody2D.gravityScale = _playerConfig.GravityScale;
     }
 
     [Inject]
@@ -95,25 +95,27 @@ public class Player : MonoBehaviour
 
     public void Jump()
     {
-        if (IsGrounded() && _rigidbody.velocity.y <= 0)
+        if (IsGrounded() && _rigidbody2D.velocity.y <= 0)
         {
-            Vector2 velocity = _rigidbody.velocity;
-            velocity.y = _playerConfig.JumpForce;
-            velocity.x = 0;
-            _rigidbody.velocity = velocity;
+            ChangePlayerVelocity(_playerConfig.JumpForce, 0);
         }
+    }
+
+    public void ChangePlayerVelocity(float yVelocity, float xVelocity)
+    {
+        Vector2 velocity = _rigidbody2D.velocity;
+        velocity.y = yVelocity;
+        velocity.x = xVelocity;
+        _rigidbody2D.velocity = velocity;
     }
 
     public void SpecialJump(float jumpForce, int layerMask)
     {
         bool groundedOnLayer = _groundChecker.IsTouchingLayers(layerMask);
 
-        if (groundedOnLayer && _rigidbody.velocity.y <= 0)
+        if (groundedOnLayer && _rigidbody2D.velocity.y <= 0)
         {
-            Vector2 velocity = _rigidbody.velocity;
-            velocity.y = jumpForce;
-            velocity.x = 0;
-            _rigidbody.velocity = velocity;
+            ChangePlayerVelocity(jumpForce, 0);
         }
     }
 }

@@ -25,7 +25,7 @@ public class CameraFollow : MonoBehaviour
 
     private void CheckPlayerYPosition()
     {
-        if (_player.Rigidbody.velocity.y > 0)
+        if (_player.Rigidbody2D.velocity.y > 0)
         {
             _cameraBottom = Camera.main.ViewportToWorldPoint(Vector2.zero).y;
         }

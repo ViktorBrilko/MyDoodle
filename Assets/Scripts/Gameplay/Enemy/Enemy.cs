@@ -48,6 +48,11 @@ public class Enemy : MonoBehaviour, IResetable, IDespawnable
                 if (!player.IsInvincible)
                 {
                     player.Die();
+                    player.ChangePlayerVelocity(0, 0);
+                }
+                else
+                {
+                    Die();
                 }
             }
         }

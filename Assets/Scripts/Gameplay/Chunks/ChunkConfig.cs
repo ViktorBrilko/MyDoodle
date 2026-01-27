@@ -29,6 +29,9 @@ namespace Gameplay.Chunks
         
         public int MaxBoosts { get; set; }
         public int BoostedPlatformChance { get; set; }
+        public int BrokenPlatformChance { get; set; }
+        public int MaxBrokenPlatformInChunk { get; set; }
+        
         
     }
 }
