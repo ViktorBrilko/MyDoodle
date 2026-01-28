@@ -1,5 +1,6 @@
 using System.Collections;
 using Gameplay;
+using Gameplay.Boosts;
 using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
@@ -39,6 +40,16 @@ public class Player : MonoBehaviour
         _enemyLayerNumber = LayerMask.GetMask(ENEMY_LAYER_NAME);
     }
 
+    private void OnEnable()
+    {
+        _signalBus.Subscribe<PlayerGetJetpackSignal>(OnTakingJetpack);
+    }
+
+    private void OnDisable()
+    {
+        _signalBus.Unsubscribe<PlayerGetJetpackSignal>(OnTakingJetpack);
+    }
+
     private void Start()
     {
         _rigidbody2D.gravityScale = _playerConfig.GravityScale;
@@ -51,6 +62,26 @@ public class Player : MonoBehaviour
         _playerConfig = config;
         _bulletSpawner = spawner;
         _signalBus = signalBus;
+    }
+
+    private void OnTakingJetpack(PlayerGetJetpackSignal signal)
+    {
+        StartCoroutine(FlyingRoutine(signal.Jetpack));
+    }
+
+    private IEnumerator FlyingRoutine(Jetpack jetpack)
+    {
+        float elapsedTime = 0;
+        BecomeInvincible(jetpack.FlightTime);
+        Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+        while (elapsedTime < jetpack.FlightTime)
+        {
+            transform.Translate(Vector3.up * jetpack.Speed * Time.deltaTime);
+            yield return null;
+            elapsedTime += Time.deltaTime;
+        }
+
+        Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
 
     public void Move(float direction)

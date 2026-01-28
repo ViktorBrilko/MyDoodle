@@ -1,4 +1,5 @@
 ﻿using System;
+using Gameplay.Boosts;
 using Gameplay.Chunks;
 using Gameplay.Platforms;
 using UnityEngine;
@@ -30,11 +31,13 @@ namespace Gameplay
         private float _lastSpringYPosition;
 
         private Spawner<Shield> _shieldSpawner;
+        private Spawner<Jetpack> _jetpackSpawner;
 
         public ChunkGenerator(ObjectPool<Chunk> pool, Transform chunkStartPoint,
             Spawner<Enemy> enemySpawner, Spawner<BasePlatform> platformSpawner,
             Spawner<BrokenPlatform> brokenPlatformSpawner, ChunkConfig chunkConfig,
             SignalBus signalBus, Spawner<Spring> springSpawner, Spawner<Shield> shieldSpawner,
+            Spawner<Jetpack> jetpackSpawner,
             GameObject enemyPrefab, GameObject platformPrefab)
         {
             _rightSideOfScreenInWorld =
@@ -51,6 +54,7 @@ namespace Gameplay
             _platformSpawner = platformSpawner;
             _springSpawner = springSpawner;
             _shieldSpawner = shieldSpawner;
+            _jetpackSpawner = jetpackSpawner;
             _brokenPlatformSpawner = brokenPlatformSpawner;
         }
 
@@ -189,7 +193,8 @@ namespace Gameplay
                 Platform platform;
 
                 int chance = Random.Range(0, 100);
-                if (chance < _config.BrokenPlatformChance && lastYChange != _config.BigChangeY && !isLastPlatformBroken)
+                if (chance < _config.BrokenPlatformChance && lastYChange != _config.BigChangeY &&
+                    !isLastPlatformBroken && _currentY != _config.ItemStartYGeneration)
                 {
                     platform = _brokenPlatformSpawner.SpawnItem(candidatePosition);
                     isLastPlatformBroken = true;
@@ -242,11 +247,23 @@ namespace Gameplay
             int chance = Random.Range(0, 100);
             if (chance > _config.BoostedPlatformChance) return;
 
-            Shield shield = _shieldSpawner.SpawnItem(new Vector3());
-            shield.transform.SetParent(basePlatform.transform);
-            basePlatform.Add(shield);
+            Boost boost;
+
+            chance = Random.Range(0, 100);
+            if (0 < chance && chance <= _config.ShieldChance)
+            {
+                boost = _shieldSpawner.SpawnItem(new Vector3());
+            }
+            else 
+            {
+                boost = _jetpackSpawner.SpawnItem(new Vector3());
+            }
+
+            boost.transform.SetParent(basePlatform.transform);
+            chunk.Add(boost, boost.transform.localPosition);
+            boost.transform.localPosition = basePlatform.ShieldPosition;
+
             basePlatform.IsOccupied = true;
-            shield.transform.localPosition = basePlatform.ShieldPosition;
             chunk.BoostsInChunk++;
         }
 

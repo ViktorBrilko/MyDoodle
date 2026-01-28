@@ -1,69 +1,38 @@
-﻿using System;
-using System.Collections;
+﻿using Gameplay.Signals;
 using UnityEngine;
+using Zenject;
 
 namespace Gameplay.Boosts
 {
-    public class Jetpack : MonoBehaviour
+    public class Jetpack : Boost
     {
-        [SerializeField] private float _speed;
-        [SerializeField] private float _flightTime;
+        private float _speed;
+        private float _flightTime;
+        private SignalBus _signalBus;
 
-        Player _player;
+        public float Speed => _speed;
+        public float FlightTime => _flightTime;
+
+        [Inject]
+        public void Construct(JetpackConfig config, SignalBus signalBus)
+        {
+            _speed = config.Speed;
+            _flightTime = config.FlightTime;
+            _signalBus = signalBus;
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out Player player))
             {
-                // StartCoroutine(FlyRoutine(player));
-
-                player.BecomeInvincible(_flightTime);
-
-                _player = player;
+                _signalBus.Fire(new PlayerGetJetpackSignal(this));
+                Despawn();
             }
         }
 
-             if (_player != null)          
-            {
-                _player.transform.Translate(Vector3.up * _speed * Time.deltaTime);
-                StartCoroutine(WaitTime());
-            }
-                
-        }
-
-        private IEnumerator WaitTime()
+        public override void Despawn()
         {
-            _player.Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-            yield return new WaitForSeconds(_flightTime);
-            _player.Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-            _player = null;
-            
-        }
-
-        private IEnumerator FlyRoutine(Player player)
-        {
-            player.Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-            Vector3 end = new Vector3(player.transform.position.x, player.transform.position.y + 20,
-                player.transform.position.z);
-
-            float elapsed = 0f;
-            while (elapsed < _flightTime)
-            {
-                if (Vector3.Distance(player.transform.position, end) < 1f)
-                {
-                    player.transform.position = end;
-                    break;
-                }
-
-                player.transform.position = Vector3.Lerp(player.transform.position, end, elapsed / _flightTime);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            player.transform.position = end;
-
-            player.Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-            Destroy(gameObject);
+            _signalBus.Fire(new ResetSignal<Jetpack>(this));
         }
     }
 }

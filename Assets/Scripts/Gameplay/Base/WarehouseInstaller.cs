@@ -1,5 +1,6 @@
 using Cinemachine;
 using Gameplay;
+using Gameplay.Boosts;
 using Gameplay.Chunks;
 using Gameplay.Platforms;
 using Gameplay.Signals;
@@ -15,6 +16,7 @@ public class WarehouseInstaller : MonoInstaller
     [SerializeField] private int _chunkPoolCapacity;
     [SerializeField] private int _springPoolCapacity;
     [SerializeField] private int _shieldPoolCapacity;
+    [SerializeField] private int _jetpackPoolCapacity;
     [SerializeField] private Transform _chunkStartPoint;
     [SerializeField] private Transform _playerStartPoint;
 
@@ -27,6 +29,7 @@ public class WarehouseInstaller : MonoInstaller
     [SerializeField] private GameObject _springPrefab;
     [SerializeField] private GameObject _shieldPrefab;
     [SerializeField] private GameObject _chunkPrefab;
+    [SerializeField] private GameObject _jetpackPrefab;
 
     private ConfigProvider _provider;
 
@@ -40,8 +43,10 @@ public class WarehouseInstaller : MonoInstaller
         Container.DeclareSignal<ResetSignal<Spring>>();
         Container.DeclareSignal<ResetSignal<Shield>>();
         Container.DeclareSignal<ResetSignal<BrokenPlatform>>();
+        Container.DeclareSignal<ResetSignal<Jetpack>>();
         Container.DeclareSignal<EnemyDeadSignal>();
         Container.DeclareSignal<PlayerDiedSignal>();
+        Container.DeclareSignal<PlayerGetJetpackSignal>();
 
         _provider = new ConfigProvider();
         _provider.LoadAll();
@@ -53,7 +58,7 @@ public class WarehouseInstaller : MonoInstaller
         InstallPlatforms();
         InstallSprings();
         InstallChunks();
-        InstallShields();
+        InstallBoosts();
     }
 
     private void InstallCamera()
@@ -69,7 +74,7 @@ public class WarehouseInstaller : MonoInstaller
         Container.Bind<PlayerConfig>().FromInstance(_provider.PlayerCfg).AsSingle();
     }
     
-    private void InstallShields()
+    private void InstallBoosts()
     {
         GameObject shieldContainer = new("SHIELDS");
         Container.Bind<ShieldConfig>().FromInstance(_provider.ShieldCfg).AsSingle();
@@ -77,6 +82,13 @@ public class WarehouseInstaller : MonoInstaller
         Container.Bind<ObjectPool<Shield>>().AsSingle().WithArguments(shieldContainer.transform, _shieldPoolCapacity)
             .OnInstantiated<ObjectPool<Shield>>((c, p) => p.Initialize());
         Container.BindInterfacesAndSelfTo<Spawner<Shield>>().AsSingle();
+        
+        GameObject jetpackContainer = new("JETPACKS");
+        Container.Bind<JetpackConfig>().FromInstance(_provider.JetpackCfg).AsSingle();
+        Container.Bind<IFabric<Jetpack>>().To<Fabric<Jetpack, JetpackConfig>>().AsSingle().WithArguments(_jetpackPrefab);
+        Container.Bind<ObjectPool<Jetpack>>().AsSingle().WithArguments(jetpackContainer.transform, _jetpackPoolCapacity)
+            .OnInstantiated<ObjectPool<Jetpack>>((c, p) => p.Initialize());
+        Container.BindInterfacesAndSelfTo<Spawner<Jetpack>>().AsSingle();
     }
 
     private void InstallChunks()

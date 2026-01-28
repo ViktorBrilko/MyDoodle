@@ -3,17 +3,14 @@ using Zenject;
 
 namespace Gameplay.Platforms
 {
-    public class BrokenPlatform : Platform, IResetable, IDespawnable
+    public class BrokenPlatform : Platform
     {
         private SignalBus _signalBus;
-        private BrokenPlatformConfig _config;
 
         [Inject]
         public void Construct(SignalBus signalBus, BrokenPlatformConfig config)
         {
             _signalBus = signalBus;
-            _config = config;
-          
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -22,10 +19,6 @@ namespace Gameplay.Platforms
             {
                 Despawn();
             }
-        }
-
-        public void Reset()
-        {
         }
 
         public override void Despawn()

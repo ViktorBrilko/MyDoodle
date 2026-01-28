@@ -20,5 +20,6 @@
   "MaxBoosts" : 1,
   "BoostedPlatformChance": 10,
   "BrokenPlatformChance": 10,
-  "MaxBrokenPlatformInChunk": 7
+  "ShieldChance": 60,
+  "JetpackChance": 40
 }

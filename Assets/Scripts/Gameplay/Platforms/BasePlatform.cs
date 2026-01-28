@@ -4,7 +4,7 @@ using Gameplay.Platforms;
 using UnityEngine;
 using Zenject;
 
-public class BasePlatform : Platform, IResetable, IDespawnable
+public class BasePlatform : Platform
 {
     private SignalBus _signalBus;
     private bool _isOccupied;
@@ -34,7 +34,7 @@ public class BasePlatform : Platform, IResetable, IDespawnable
         _items.Add(item);
     }
 
-    public void Reset()
+    public override void Reset()
     {
         foreach (var item in _items)
         {

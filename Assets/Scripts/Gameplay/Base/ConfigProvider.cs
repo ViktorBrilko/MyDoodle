@@ -1,4 +1,5 @@
-﻿using Gameplay.Chunks;
+﻿using Gameplay.Boosts;
+using Gameplay.Chunks;
 using Gameplay.Platforms;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Gameplay
         public ShieldConfig ShieldCfg { get; private set; }
         public ChunkConfig ChunkCfg { get; private set; }
         public BrokenPlatformConfig BrokenPlatformCfg { get; private set; }
+        public JetpackConfig JetpackCfg { get; private set; }
         
         public void LoadAll()
         {
@@ -25,6 +27,7 @@ namespace Gameplay
             ShieldCfg = LoadFromFile<ShieldConfig>("shield_config.json");
             ChunkCfg = LoadFromFile<ChunkConfig>("chunk_config.json");
             BrokenPlatformCfg = LoadFromFile<BrokenPlatformConfig>("broken_platform_config.json");
+            JetpackCfg = LoadFromFile<JetpackConfig>("jetpack_config.json");
         }
         
         private T LoadFromFile<T>(string fileName)

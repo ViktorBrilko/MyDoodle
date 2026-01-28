@@ -1,8 +1,8 @@
-using Gameplay;
+using Gameplay.Boosts;
 using UnityEngine;
 using Zenject;
 
-public class Shield : MonoBehaviour, IResetable, IDespawnable
+public class Shield : Boost
 {
     private int _shieldInvincibilityTime;
     private SignalBus _signalBus;
@@ -19,15 +19,11 @@ public class Shield : MonoBehaviour, IResetable, IDespawnable
         if (other.TryGetComponent(out Player player))
         {
             player.BecomeInvincible(_shieldInvincibilityTime);
-			_signalBus.Fire(new ResetSignal<Shield>(this));
+            Despawn();
         }
     }
 
-    public void Reset()
-    {
-    }
-
-    public void Despawn()
+    public override void Despawn()
     {
         _signalBus.Fire(new ResetSignal<Shield>(this));
     }

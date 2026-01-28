@@ -2,10 +2,15 @@
 
 namespace Gameplay.Platforms
 {
-    public abstract class Platform : MonoBehaviour, IDespawnable
+    public abstract class Platform : MonoBehaviour, IDespawnable, IResetable
     {
         public virtual void Despawn()
         {
+        }
+
+        public virtual void Reset()
+        {
+           
         }
     }
 }
