@@ -3,38 +3,41 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class RestartPanel : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private GameObject _restartPanel;
-
-    private SignalBus _signalBus;
-
-    [Inject]
-    public void Construct(SignalBus signalBus)
+    public class RestartPanel : MonoBehaviour
     {
-        _signalBus = signalBus;
-    }
+        [SerializeField] private GameObject _restartPanel;
+
+        private SignalBus _signalBus;
+
+        [Inject]
+        public void Construct(SignalBus signalBus)
+        {
+            _signalBus = signalBus;
+        }
     
-    private void OnEnable()
-    {
-        _signalBus.Subscribe<PlayerDiedSignal>(OnPlayerDeath);
-    }
+        private void OnEnable()
+        {
+            _signalBus.Subscribe<PlayerDiedSignal>(OnPlayerDeath);
+        }
 
-    private void OnDisable()
-    {
-        _signalBus.Unsubscribe<PlayerDiedSignal>(OnPlayerDeath);
+        private void OnDisable()
+        {
+            _signalBus.Unsubscribe<PlayerDiedSignal>(OnPlayerDeath);
 
-    }
+        }
 
-    private void OnPlayerDeath()
-    {
-        _restartPanel.SetActive(true);
-    }
+        private void OnPlayerDeath()
+        {
+            _restartPanel.SetActive(true);
+        }
 
-    public void RestartLevel()
-    {
-        _restartPanel.SetActive(false);
-        int currentLevel = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentLevel);
+        public void RestartLevel()
+        {
+            _restartPanel.SetActive(false);
+            int currentLevel = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentLevel);
+        }
     }
 }

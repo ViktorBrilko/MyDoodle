@@ -1,4 +1,6 @@
-﻿namespace Gameplay.Signals
+﻿using Gameplay.Enemies;
+
+namespace Gameplay.Signals
 {
     public class EnemyDeadSignal
     {

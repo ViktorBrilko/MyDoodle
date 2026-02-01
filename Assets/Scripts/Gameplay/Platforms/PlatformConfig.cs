@@ -1,9 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-public class PlatformConfig 
+namespace Gameplay.Platforms
 {
-    public Vector3 SpringPosition { get; set; } 
-    public Vector3 BoostPosition { get; set; } 
+    [Serializable]
+    public class PlatformConfig 
+    {
+        public Vector3 SpringPosition { get; set; } 
+        public Vector3 BoostPosition { get; set; } 
+    }
 }

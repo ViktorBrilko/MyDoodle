@@ -1,4 +1,5 @@
-﻿using Gameplay.Signals;
+﻿using Gameplay.Players;
+using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 

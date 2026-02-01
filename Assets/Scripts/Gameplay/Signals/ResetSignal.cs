@@ -1,9 +1,12 @@
-public class ResetSignal<T>
+namespace Gameplay.Signals
 {
-    public T Resetable { get; }
-
-    public ResetSignal(T resetable)
+    public class ResetSignal<T>
     {
-        Resetable = resetable;
+        public T Resetable { get; }
+
+        public ResetSignal(T resetable)
+        {
+            Resetable = resetable;
+        }
     }
 }

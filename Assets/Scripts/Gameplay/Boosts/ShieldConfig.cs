@@ -1,7 +1,10 @@
 ﻿using System;
 
-[Serializable]
-public class ShieldConfig 
+namespace Gameplay.Boosts
 {
-    public int ShieldInvincibilityTime { get; set; }
+    [Serializable]
+    public class ShieldConfig 
+    {
+        public int ShieldInvincibilityTime { get; set; }
+    }
 }

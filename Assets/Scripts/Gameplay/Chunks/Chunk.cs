@@ -1,79 +1,82 @@
 using System.Collections.Generic;
-using Gameplay;
-using Gameplay.Chunks;
+using Core;
+using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 
-public class Chunk : MonoBehaviour, IResetable
+namespace Gameplay.Chunks
 {
-    private SignalBus _signalBus;
-    private float _yCameraOffset;
-    private List<IDespawnable> _items = new();
-    private List<Vector2> _itemsPositions = new();
-    private int _springsInChunk;
-    private int _boostsInChunk;
-    private int _maxSpringsInChunk;
-
-    //удалить
-    public Transform endOfChunk;
-
-    public List<Vector2> ItemsPositions => _itemsPositions;
-
-    public int MaxSpringsInChunk => _maxSpringsInChunk;
-
-    public int SpringsInChunk
+    public class Chunk : MonoBehaviour, IResetable
     {
-        get => _springsInChunk;
-        set => _springsInChunk = value;
-    }
+        private SignalBus _signalBus;
+        private float _yCameraOffset;
+        private List<IDespawnable> _items = new();
+        private List<Vector2> _itemsPositions = new();
+        private int _springsInChunk;
+        private int _boostsInChunk;
+        private int _maxSpringsInChunk;
 
-    public int BoostsInChunk
-    {
-        get => _boostsInChunk;
-        set => _boostsInChunk = value;
-    }
+        //удалить
+        public Transform endOfChunk;
 
-    [Inject]
-    public void Construct(ChunkConfig config, SignalBus signalBus)
-    {
-        _yCameraOffset = config.YCameraOffset;
-        _signalBus = signalBus;
+        public List<Vector2> ItemsPositions => _itemsPositions;
 
-        _maxSpringsInChunk = Random.Range(config.MinSprings, config.MaxSprings + 1);
-    }
+        public int MaxSpringsInChunk => _maxSpringsInChunk;
 
-    public void Add(IDespawnable item, Vector2 position)
-    {
-        _items.Add(item);
-        _itemsPositions.Add(position);
-    }
-
-    private void Update()
-    {
-        if (CheckChunkVisibility())
+        public int SpringsInChunk
         {
-            TurnOff();
-        }
-    }
-
-    private bool CheckChunkVisibility()
-    {
-        return Camera.main.WorldToViewportPoint(transform.position).y <= _yCameraOffset;
-    }
-
-    private void TurnOff()
-    {
-        _signalBus.Fire(new ResetSignal<Chunk>(this));
-    }
-
-    public void Reset()
-    {
-        foreach (var item in _items)
-        {
-            item.Despawn();
+            get => _springsInChunk;
+            set => _springsInChunk = value;
         }
 
-        _items.Clear();
-        _itemsPositions.Clear();
+        public int BoostsInChunk
+        {
+            get => _boostsInChunk;
+            set => _boostsInChunk = value;
+        }
+
+        [Inject]
+        public void Construct(ChunkConfig config, SignalBus signalBus)
+        {
+            _yCameraOffset = config.YCameraOffset;
+            _signalBus = signalBus;
+
+            _maxSpringsInChunk = Random.Range(config.MinSprings, config.MaxSprings + 1);
+        }
+
+        public void Add(IDespawnable item, Vector2 position)
+        {
+            _items.Add(item);
+            _itemsPositions.Add(position);
+        }
+
+        private void Update()
+        {
+            if (CheckChunkVisibility())
+            {
+                TurnOff();
+            }
+        }
+
+        private bool CheckChunkVisibility()
+        {
+            return Camera.main.WorldToViewportPoint(transform.position).y <= _yCameraOffset;
+        }
+
+        private void TurnOff()
+        {
+            _signalBus.Fire(new ResetSignal<Chunk>(this));
+        }
+
+        public void Reset()
+        {
+            foreach (var item in _items)
+            {
+                item.Despawn();
+            }
+
+            _items.Clear();
+            _itemsPositions.Clear();
+        }
     }
 }

@@ -1,17 +1,15 @@
-using UnityEngine;
 using Zenject;
 
-public class CoreInstaller : MonoInstaller, IInitializable
+namespace Core
 {
-   
-
-    public override void InstallBindings()
+    public class CoreInstaller : MonoInstaller, IInitializable
     {
-        
-    }
+        public override void InstallBindings()
+        {
+        }
 
-    public void Initialize()
-    {
-        
+        public void Initialize()
+        {
+        }
     }
 }

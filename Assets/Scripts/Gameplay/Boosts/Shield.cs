@@ -1,30 +1,34 @@
-using Gameplay.Boosts;
+using Gameplay.Players;
+using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 
-public class Shield : Boost
+namespace Gameplay.Boosts
 {
-    private int _shieldInvincibilityTime;
-    private SignalBus _signalBus;
+    public class Shield : Boost
+    {
+        private int _shieldInvincibilityTime;
+        private SignalBus _signalBus;
 
-    [Inject]
-    public void Construct(ShieldConfig config, SignalBus signalBus)
-    {
-        _shieldInvincibilityTime = config.ShieldInvincibilityTime;
-        _signalBus = signalBus;
-    }
-    
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.TryGetComponent(out Player player))
+        [Inject]
+        public void Construct(ShieldConfig config, SignalBus signalBus)
         {
-            player.BecomeInvincible(_shieldInvincibilityTime);
-            Despawn();
+            _shieldInvincibilityTime = config.ShieldInvincibilityTime;
+            _signalBus = signalBus;
         }
-    }
+    
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.TryGetComponent(out Player player))
+            {
+                player.BecomeInvincible(_shieldInvincibilityTime);
+                Despawn();
+            }
+        }
 
-    public override void Despawn()
-    {
-        _signalBus.Fire(new ResetSignal<Shield>(this));
+        public override void Despawn()
+        {
+            _signalBus.Fire(new ResetSignal<Shield>(this));
+        }
     }
 }

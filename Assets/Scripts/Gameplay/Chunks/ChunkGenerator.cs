@@ -1,12 +1,16 @@
 ﻿using System;
+using Core;
+using Gameplay.Base;
 using Gameplay.Boosts;
-using Gameplay.Chunks;
+using Gameplay.Enemies;
 using Gameplay.Platforms;
+using Gameplay.Signals;
+using Gameplay.Springs;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Gameplay
+namespace Gameplay.Chunks
 {
     public class ChunkGenerator : IInitializable, IDisposable
     {

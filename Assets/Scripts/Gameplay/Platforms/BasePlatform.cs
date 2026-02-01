@@ -1,51 +1,54 @@
 using System.Collections.Generic;
-using Gameplay;
-using Gameplay.Platforms;
+using Core;
+using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 
-public class BasePlatform : Platform
+namespace Gameplay.Platforms
 {
-    private SignalBus _signalBus;
-    private bool _isOccupied;
-    private Vector3 _springPosition;
-    private Vector3 _shieldPosition;
-    private List<IDespawnable> _items = new();
-
-    public Vector3 SpringPosition => _springPosition;
-    public Vector3 ShieldPosition => _shieldPosition;
-
-    public bool IsOccupied
+    public class BasePlatform : Platform
     {
-        get => _isOccupied;
-        set => _isOccupied = value;
-    }
+        private SignalBus _signalBus;
+        private bool _isOccupied;
+        private Vector3 _springPosition;
+        private Vector3 _shieldPosition;
+        private List<IDespawnable> _items = new();
 
-    [Inject]
-    public void Construct(SignalBus signalBus, PlatformConfig config)
-    {
-        _signalBus = signalBus;
-        _springPosition = config.SpringPosition;
-        _shieldPosition = config.BoostPosition;
-    }
-    
-    public void Add(IDespawnable item)
-    {
-        _items.Add(item);
-    }
+        public Vector3 SpringPosition => _springPosition;
+        public Vector3 ShieldPosition => _shieldPosition;
 
-    public override void Reset()
-    {
-        foreach (var item in _items)
+        public bool IsOccupied
         {
-            item.Despawn();
+            get => _isOccupied;
+            set => _isOccupied = value;
         }
 
-        _items.Clear();
-    }
+        [Inject]
+        public void Construct(SignalBus signalBus, PlatformConfig config)
+        {
+            _signalBus = signalBus;
+            _springPosition = config.SpringPosition;
+            _shieldPosition = config.BoostPosition;
+        }
+    
+        public void Add(IDespawnable item)
+        {
+            _items.Add(item);
+        }
 
-    public override void Despawn()
-    {
-        _signalBus.Fire(new ResetSignal<BasePlatform>(this));
+        public override void Reset()
+        {
+            foreach (var item in _items)
+            {
+                item.Despawn();
+            }
+
+            _items.Clear();
+        }
+
+        public override void Despawn()
+        {
+            _signalBus.Fire(new ResetSignal<BasePlatform>(this));
+        }
     }
 }

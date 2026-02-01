@@ -1,8 +1,10 @@
 ﻿using System;
+using Core;
+using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 
-namespace Gameplay
+namespace Gameplay.Base
 {
     public class Spawner<T> : IInitializable, IDisposable
         where T : Component, IResetable

@@ -1,9 +1,14 @@
-﻿using Gameplay.Boosts;
+﻿using Gameplay.Ads;
+using Gameplay.Boosts;
+using Gameplay.Bullets;
 using Gameplay.Chunks;
+using Gameplay.Enemies;
 using Gameplay.Platforms;
+using Gameplay.Players;
+using Gameplay.Springs;
 using UnityEngine;
 
-namespace Gameplay
+namespace Gameplay.Base
 {
     public class ConfigProvider
     {
@@ -16,6 +21,7 @@ namespace Gameplay
         public ChunkConfig ChunkCfg { get; private set; }
         public BrokenPlatformConfig BrokenPlatformCfg { get; private set; }
         public JetpackConfig JetpackCfg { get; private set; }
+        public AdsConfig AdsCfg { get; private set; }
         
         public void LoadAll()
         {
@@ -28,6 +34,7 @@ namespace Gameplay
             ChunkCfg = LoadFromFile<ChunkConfig>("chunk_config.json");
             BrokenPlatformCfg = LoadFromFile<BrokenPlatformConfig>("broken_platform_config.json");
             JetpackCfg = LoadFromFile<JetpackConfig>("jetpack_config.json");
+            AdsCfg = LoadFromFile<AdsConfig>("ads_config.json");
         }
         
         private T LoadFromFile<T>(string fileName)
