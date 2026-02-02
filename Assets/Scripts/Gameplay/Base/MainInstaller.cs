@@ -14,7 +14,7 @@ using Zenject;
 
 namespace Gameplay.Base
 {
-    public class WarehouseInstaller : MonoInstaller
+    public class MainInstaller : MonoInstaller
     {
         [SerializeField] private int _bulletPoolCapacity;
         [SerializeField] private int _enemyPoolCapacity;
@@ -24,6 +24,7 @@ namespace Gameplay.Base
         [SerializeField] private int _springPoolCapacity;
         [SerializeField] private int _shieldPoolCapacity;
         [SerializeField] private int _jetpackPoolCapacity;
+        
         [SerializeField] private Transform _chunkStartPoint;
         [SerializeField] private Transform _playerStartPoint;
 

@@ -16,7 +16,7 @@ namespace UI
         {
             _signalBus = signalBus;
         }
-    
+
         private void OnEnable()
         {
             _signalBus.Subscribe<PlayerDiedSignal>(OnPlayerDeath);
@@ -25,7 +25,6 @@ namespace UI
         private void OnDisable()
         {
             _signalBus.Unsubscribe<PlayerDiedSignal>(OnPlayerDeath);
-
         }
 
         private void OnPlayerDeath()

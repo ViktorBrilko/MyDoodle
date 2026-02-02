@@ -17,7 +17,6 @@ namespace Core
             _config = config;
         }
 
-
         public TProduct Create(Transform parent)
         {
             TProduct product = _container.InstantiatePrefabForComponent<TProduct>(_prefab, parent,

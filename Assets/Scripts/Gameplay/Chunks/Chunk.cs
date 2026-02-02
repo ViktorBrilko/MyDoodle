@@ -16,9 +16,6 @@ namespace Gameplay.Chunks
         private int _boostsInChunk;
         private int _maxSpringsInChunk;
 
-        //удалить
-        public Transform endOfChunk;
-
         public List<Vector2> ItemsPositions => _itemsPositions;
 
         public int MaxSpringsInChunk => _maxSpringsInChunk;

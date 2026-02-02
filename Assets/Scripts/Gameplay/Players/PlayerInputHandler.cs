@@ -17,6 +17,12 @@ namespace Gameplay.Players
             }
         
             _player.Jump();
+            
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                _player.BecomeInvincible(1000);
+            }
+#endif
         }
     }
 }

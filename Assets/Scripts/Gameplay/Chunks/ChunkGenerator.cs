@@ -79,9 +79,7 @@ namespace Gameplay.Chunks
             newChunk.transform.position = position;
             FillChunk(newChunk);
 
-
             _chunkSpawnPosition.y += _config.ChunkHeight;
-            newChunk.endOfChunk.transform.position = new Vector3(0, _chunkSpawnPosition.y, 1);
             _numberOfChunk++;
         }
 
@@ -119,7 +117,7 @@ namespace Gameplay.Chunks
 
                     foreach (Vector2 existingPosition in chunk.ItemsPositions)
                     {
-                        if (candidatePosition.y == existingPosition.y &&
+                        if (Mathf.Approximately(candidatePosition.y, existingPosition.y) &&
                             Mathf.Abs(candidatePosition.x - existingPosition.x) < _platformXDistanceCoef)
                         {
                             attempts++;
@@ -177,7 +175,7 @@ namespace Gameplay.Chunks
 
                     foreach (Vector2 existingPosition in chunk.ItemsPositions)
                     {
-                        if (candidatePosition.y == existingPosition.y &&
+                        if (Mathf.Approximately(candidatePosition.y, existingPosition.y) &&
                             Mathf.Abs(candidatePosition.x - existingPosition.x) < _platformXDistanceCoef)
                         {
                             attempts++;
@@ -198,7 +196,7 @@ namespace Gameplay.Chunks
 
                 int chance = Random.Range(0, 100);
                 if (chance < _config.BrokenPlatformChance && lastYChange != _config.BigChangeY &&
-                    !isLastPlatformBroken && _currentY != _config.ItemStartYGeneration)
+                    !isLastPlatformBroken && !Mathf.Approximately(_currentY, _config.ItemStartYGeneration))
                 {
                     platform = _brokenPlatformSpawner.SpawnItem(candidatePosition);
                     isLastPlatformBroken = true;
