@@ -8,7 +8,7 @@
   "BigChangeYChance": 25,
   "BigChangeY": 2,
   "DefaultChangeY": 1,
-  "PlatformXDistanceCoef": 0.2,
+  "ItemXDistanceCoef": 0.2,
   "MaxEnemiesInChunk": 4,
   "MinEnemiesInChunk": 0,
   "MaxYDistanceBetweenEnemies": 3,

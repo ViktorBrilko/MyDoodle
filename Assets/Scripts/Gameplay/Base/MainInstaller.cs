@@ -1,5 +1,6 @@
 using Cinemachine;
 using Core;
+using Core.Configs;
 using Gameplay.Ads;
 using Gameplay.Boosts;
 using Gameplay.Bullets;
@@ -7,6 +8,7 @@ using Gameplay.Chunks;
 using Gameplay.Enemies;
 using Gameplay.Platforms;
 using Gameplay.Players;
+using Gameplay.Score;
 using Gameplay.Signals;
 using Gameplay.Springs;
 using UnityEngine;
@@ -24,7 +26,7 @@ namespace Gameplay.Base
         [SerializeField] private int _springPoolCapacity;
         [SerializeField] private int _shieldPoolCapacity;
         [SerializeField] private int _jetpackPoolCapacity;
-        
+
         [SerializeField] private Transform _chunkStartPoint;
         [SerializeField] private Transform _playerStartPoint;
 
@@ -44,7 +46,7 @@ namespace Gameplay.Base
         public override void InstallBindings()
         {
             SignalBusInstaller.Install(Container);
-            Container.DeclareSignal<ResetSignal<Chunk>>();
+            Container.DeclareSignal<ResetSignal<ChunkPresentation>>();
             Container.DeclareSignal<ResetSignal<Enemy>>();
             Container.DeclareSignal<ResetSignal<BasePlatform>>();
             Container.DeclareSignal<ResetSignal<Bullet>>();
@@ -68,6 +70,13 @@ namespace Gameplay.Base
             InstallSprings();
             InstallChunks();
             InstallBoosts();
+            InstallScore();
+        }
+
+        private void InstallScore()
+        {
+            Container.Bind<ScoreConfig>().FromInstance(_provider.ScoreCfg).AsSingle();
+            Container.BindInterfacesAndSelfTo<ScoreLogic>().AsSingle();
         }
 
         private void InstallCamera()
@@ -75,7 +84,7 @@ namespace Gameplay.Base
             Container.Bind<CinemachineVirtualCamera>().FromComponentInNewPrefab(_playerCameraPrefab)
                 .AsSingle().NonLazy();
         }
-        
+
         private void InstallAds()
         {
             Container.Bind<AdsConfig>().FromInstance(_provider.AdsCfg).AsSingle();
@@ -87,58 +96,76 @@ namespace Gameplay.Base
             Container.Bind<Player>().FromComponentInNewPrefab(_playerPrefab).UnderTransform(_playerStartPoint.transform)
                 .AsSingle().NonLazy();
             Container.Bind<PlayerConfig>().FromInstance(_provider.PlayerCfg).AsSingle();
+            Container.Bind<PlayerMovement>()
+                .FromResolveGetter<Player>(playerInstance => playerInstance.GetComponent<PlayerMovement>())
+                .AsSingle();
         }
-    
+
         private void InstallBoosts()
         {
             GameObject shieldContainer = new("SHIELDS");
             Container.Bind<ShieldConfig>().FromInstance(_provider.ShieldCfg).AsSingle();
-            Container.Bind<IFabric<Shield>>().To<Fabric<Shield, ShieldConfig>>().AsSingle().WithArguments(_shieldPrefab);
-            Container.Bind<ObjectPool<Shield>>().AsSingle().WithArguments(shieldContainer.transform, _shieldPoolCapacity)
+            Container.Bind<Core.IFactory<Shield>>().To<Core.Factory<Shield>>().AsSingle().WithArguments(_shieldPrefab);
+            Container.Bind<ObjectPool<Shield>>().AsSingle()
+                .WithArguments(shieldContainer.transform, _shieldPoolCapacity)
                 .OnInstantiated<ObjectPool<Shield>>((c, p) => p.Initialize());
             Container.BindInterfacesAndSelfTo<Spawner<Shield>>().AsSingle();
-        
+
             GameObject jetpackContainer = new("JETPACKS");
             Container.Bind<JetpackConfig>().FromInstance(_provider.JetpackCfg).AsSingle();
-            Container.Bind<IFabric<Jetpack>>().To<Fabric<Jetpack, JetpackConfig>>().AsSingle().WithArguments(_jetpackPrefab);
-            Container.Bind<ObjectPool<Jetpack>>().AsSingle().WithArguments(jetpackContainer.transform, _jetpackPoolCapacity)
+            Container.Bind<Core.IFactory<Jetpack>>().To<Core.Factory<Jetpack>>().AsSingle()
+                .WithArguments(_jetpackPrefab);
+            Container.Bind<ObjectPool<Jetpack>>().AsSingle()
+                .WithArguments(jetpackContainer.transform, _jetpackPoolCapacity)
                 .OnInstantiated<ObjectPool<Jetpack>>((c, p) => p.Initialize());
             Container.BindInterfacesAndSelfTo<Spawner<Jetpack>>().AsSingle();
+
+            Container.Bind<BoostGenerationService>().AsSingle();
         }
 
         private void InstallChunks()
         {
             GameObject chunkContainer = new("CHUNKS");
             Container.Bind<ChunkConfig>().FromInstance(_provider.ChunkCfg).AsSingle();
-            Container.Bind<IFabric<Chunk>>().To<Fabric<Chunk, ChunkConfig>>().AsSingle().WithArguments(_chunkPrefab);
-            Container.Bind<ObjectPool<Chunk>>().AsSingle().WithArguments(chunkContainer.transform, _chunkPoolCapacity)
-                .OnInstantiated<ObjectPool<Chunk>>((c, p) => p.Initialize());
-            Container.BindInterfacesAndSelfTo<ChunkGenerator>().AsSingle().WithArguments(_chunkStartPoint, _enemyPrefab, _platformPrefab);
+            Container.Bind<ChunkLogic>().AsTransient();
+            Container.Bind<PositionValidationService>().AsSingle();
+            Container.Bind<Core.IFactory<ChunkPresentation>>().To<Core.Factory<ChunkPresentation>>().AsSingle()
+                .WithArguments(_chunkPrefab);
+            Container.Bind<ObjectPool<ChunkPresentation>>().AsSingle()
+                .WithArguments(chunkContainer.transform, _chunkPoolCapacity)
+                .OnInstantiated<ObjectPool<ChunkPresentation>>((c, p) => p.Initialize());
+            Container.BindInterfacesAndSelfTo<ChunkGenerator>().AsSingle()
+                .WithArguments(_chunkStartPoint);
         }
 
         private void InstallEnemies()
         {
             GameObject enemyContainer = new("ENEMIES");
             Container.Bind<EnemyConfig>().FromInstance(_provider.EnemyCfg).AsSingle();
-            Container.Bind<IFabric<Enemies.Enemy>>().To<Fabric<Enemies.Enemy, EnemyConfig>>().AsSingle().WithArguments(_enemyPrefab);
-            Container.Bind<ObjectPool<Enemies.Enemy>>().AsSingle().WithArguments(enemyContainer.transform, _enemyPoolCapacity)
-                .OnInstantiated<ObjectPool<Enemies.Enemy>>((c, p) => p.Initialize());
-            Container.BindInterfacesAndSelfTo<Spawner<Enemies.Enemy>>().AsSingle();
+            Container.Bind<EnemyGenerationService>().AsSingle().WithArguments(_platformPrefab);
+            Container.Bind<Core.IFactory<Enemy>>().To<Core.Factory<Enemy>>().AsSingle().WithArguments(_enemyPrefab);
+            Container.Bind<ObjectPool<Enemy>>().AsSingle().WithArguments(enemyContainer.transform, _enemyPoolCapacity)
+                .OnInstantiated<ObjectPool<Enemy>>((c, p) => p.Initialize());
+            Container.BindInterfacesAndSelfTo<Spawner<Enemy>>().AsSingle();
         }
 
         private void InstallPlatforms()
         {
+            Container.Bind<PlatformGenerationService>().AsSingle().WithArguments(_platformPrefab);
+            
             GameObject platformContainer = new("PLATFORMS");
             Container.Bind<PlatformConfig>().FromInstance(_provider.PlatformCfg).AsSingle();
-            Container.Bind<IFabric<BasePlatform>>().To<Fabric<BasePlatform, PlatformConfig>>().AsSingle().WithArguments(_platformPrefab);        
+            Container.Bind<Core.IFactory<BasePlatform>>().To<Core.Factory<BasePlatform>>().AsSingle()
+                .WithArguments(_platformPrefab);
             Container.Bind<ObjectPool<BasePlatform>>().AsSingle()
                 .WithArguments(platformContainer.transform, _platformPoolCapacity)
                 .OnInstantiated<ObjectPool<BasePlatform>>((c, p) => p.Initialize());
             Container.BindInterfacesAndSelfTo<Spawner<BasePlatform>>().AsSingle();
-        
+
             GameObject brokenPlatformContainer = new("BROKEN_PLATFORMS");
             Container.Bind<BrokenPlatformConfig>().FromInstance(_provider.BrokenPlatformCfg).AsSingle();
-            Container.Bind<IFabric<BrokenPlatform>>().To<Fabric<BrokenPlatform, BrokenPlatformConfig>>().AsSingle().WithArguments(_brokenPlatformPrefab);        
+            Container.Bind<Core.IFactory<BrokenPlatform>>().To<Core.Factory<BrokenPlatform>>().AsSingle()
+                .WithArguments(_brokenPlatformPrefab);
             Container.Bind<ObjectPool<BrokenPlatform>>().AsSingle()
                 .WithArguments(brokenPlatformContainer.transform, _brokenPlatformPoolCapacity)
                 .OnInstantiated<ObjectPool<BrokenPlatform>>((c, p) => p.Initialize());
@@ -149,19 +176,21 @@ namespace Gameplay.Base
         {
             GameObject springContainer = new("SPRINGS");
             Container.Bind<SpringConfig>().FromInstance(_provider.SpringCfg).AsSingle();
-            Container.Bind<IFabric<Spring>>().To<Fabric<Spring, SpringConfig>>().AsSingle().WithArguments(_springPrefab);
+            Container.Bind<Core.IFactory<Spring>>().To<Core.Factory<Spring>>().AsSingle().WithArguments(_springPrefab);
             Container.Bind<ObjectPool<Spring>>().AsSingle()
                 .WithArguments(springContainer.transform, _springPoolCapacity)
                 .OnInstantiated<ObjectPool<Spring>>((c, p) => p.Initialize());
             Container.BindInterfacesAndSelfTo<Spawner<Spring>>().AsSingle();
+            Container.Bind<SpringGenerationService>().AsSingle();
         }
 
         private void InstallBullets()
         {
             GameObject bulletContainer = new("BULLETS");
             Container.Bind<BulletConfig>().FromInstance(_provider.BulletCfg).AsSingle();
-            Container.Bind<IFabric<Bullet>>().To<Fabric<Bullet, BulletConfig>>().AsSingle().WithArguments(_bulletPrefab);
-            Container.Bind<ObjectPool<Bullet>>().AsSingle().WithArguments(bulletContainer.transform, _bulletPoolCapacity)
+            Container.Bind<Core.IFactory<Bullet>>().To<Core.Factory<Bullet>>().AsSingle().WithArguments(_bulletPrefab);
+            Container.Bind<ObjectPool<Bullet>>().AsSingle()
+                .WithArguments(bulletContainer.transform, _bulletPoolCapacity)
                 .OnInstantiated<ObjectPool<Bullet>>((c, p) => p.Initialize());
             Container.BindInterfacesAndSelfTo<Spawner<Bullet>>().AsSingle();
         }

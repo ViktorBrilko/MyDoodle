@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gameplay.Springs
+namespace Core.Configs
 {
     [Serializable]
     public class SpringConfig 

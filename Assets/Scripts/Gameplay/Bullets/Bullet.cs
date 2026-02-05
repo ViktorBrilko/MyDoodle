@@ -1,4 +1,5 @@
 using Core;
+using Core.Configs;
 using Gameplay.Signals;
 using UnityEngine;
 using Zenject;

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Gameplay.Platforms
+namespace Core.Configs
 {
     [Serializable]
     public class PlatformConfig 

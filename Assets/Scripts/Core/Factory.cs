@@ -3,24 +3,23 @@ using Zenject;
 
 namespace Core
 {
-    public class Fabric<TProduct, TConfig> :  IFabric<TProduct>
+    public class Factory<TProduct> : IFactory<TProduct>
+        where TProduct : Component
     {
         private DiContainer _container;
         private GameObject _prefab;
-        private TConfig _config;
+
 
         [Inject]
-        public Fabric(DiContainer container, GameObject prefab, TConfig config)
+        public Factory(DiContainer container, GameObject prefab)
         {
             _container = container;
             _prefab = prefab;
-            _config = config;
         }
 
         public TProduct Create(Transform parent)
         {
-            TProduct product = _container.InstantiatePrefabForComponent<TProduct>(_prefab, parent,
-                new object[] { _config });
+            TProduct product = _container.InstantiatePrefabForComponent<TProduct>(_prefab, parent);
 
             return product;
         }

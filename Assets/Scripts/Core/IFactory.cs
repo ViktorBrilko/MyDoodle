@@ -2,7 +2,8 @@
 
 namespace Core
 {
-    public interface IFabric<TProduct>
+    public interface IFactory<TProduct>
+    where TProduct : Component
     {
         public TProduct Create(Transform parent);
     }

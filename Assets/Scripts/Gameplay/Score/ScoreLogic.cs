@@ -1,62 +1,55 @@
 ﻿using System;
+using Core.Configs;
 using Gameplay.Players;
 using Gameplay.Signals;
-using TMPro;
 using UnityEngine;
 using Zenject;
 
-namespace UI
+namespace Gameplay.Score
 {
-    public class ScoreManager : MonoBehaviour
+    public class ScoreLogic : IInitializable, IDisposable
     {
-        [SerializeField] private TMP_Text _scoreText;
-        [SerializeField] private float _scoreCoef;
-
-        private int _score;
         private SignalBus _signalBus;
         private Player _player;
         private float _maxY;
+        private ScoreConfig _config;
+        
+        public int Score { get; private set; }
 
-        [Inject]
-        public void Construct(SignalBus signalBus, Player player)
+        public ScoreLogic(SignalBus signalBus, Player player, ScoreConfig config)
         {
             _signalBus = signalBus;
             _player = player;
+            _config = config;
         }
-        
-        private void OnEnable()
+
+        public void Initialize()
         {
             _signalBus.Subscribe<EnemyDeadSignal>(OnEnemyDeath);
         }
 
-        private void OnDisable()
+        public void Dispose()
         {
             _signalBus.Unsubscribe<EnemyDeadSignal>(OnEnemyDeath);
         }
 
-        private void Update()
-        {
-            CalculateHeightScore();
-            _scoreText.text = _score.ToString();
-        }
-
-        private void CalculateHeightScore()
+        public void CalculateHeightScore()
         {
             float currentY = _player.transform.position.y;
 
             if (currentY > _maxY)
             {
                 float diff = currentY - _maxY;
-                int newScore = Convert.ToInt32(diff * _scoreCoef);
+                int newScore = Convert.ToInt32(diff * _config.ScoreCoef);
                 AddScore(newScore);
 
                 _maxY = currentY;
             }
         }
-
+        
         private void AddScore(int score)
         {
-            _score += score;
+            Score += score;
         }
 
         private void OnEnemyDeath(EnemyDeadSignal signal)

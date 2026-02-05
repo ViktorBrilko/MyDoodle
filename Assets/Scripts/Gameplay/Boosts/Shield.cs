@@ -1,3 +1,5 @@
+using Core;
+using Core.Configs;
 using Gameplay.Players;
 using Gameplay.Signals;
 using UnityEngine;
@@ -5,7 +7,7 @@ using Zenject;
 
 namespace Gameplay.Boosts
 {
-    public class Shield : Boost
+    public class Shield : Boost, IResetable
     {
         private int _shieldInvincibilityTime;
         private SignalBus _signalBus;
@@ -29,6 +31,10 @@ namespace Gameplay.Boosts
         public override void Despawn()
         {
             _signalBus.Fire(new ResetSignal<Shield>(this));
+        }
+
+        public void Reset()
+        {
         }
     }
 }

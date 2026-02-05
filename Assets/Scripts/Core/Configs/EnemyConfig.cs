@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gameplay.Enemies
+namespace Core.Configs
 {
     [Serializable]
     public class EnemyConfig 

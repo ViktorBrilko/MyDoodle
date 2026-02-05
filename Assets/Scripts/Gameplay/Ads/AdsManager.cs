@@ -1,4 +1,5 @@
 using System;
+using Core.Configs;
 using Gameplay.Signals;
 using GoogleMobileAds.Api;
 using UnityEngine;
@@ -58,13 +59,11 @@ namespace Gameplay.Ads
         private void DestroyBannerView(BannerView bannerView)
         {
             bannerView.Destroy();
-            bannerView = null;
         }
 
         private void DestroyRewardedAd(RewardedAd rewardedAd)
         {
             rewardedAd.Destroy();
-            rewardedAd = null;
         }
 
         private void RegisterReloadHandler(RewardedAd ad)

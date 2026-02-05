@@ -1,11 +1,13 @@
-﻿using Gameplay.Players;
+﻿using Core;
+using Core.Configs;
+using Gameplay.Players;
 using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 
 namespace Gameplay.Boosts
 {
-    public class Jetpack : Boost
+    public class Jetpack : Boost, IResetable
     {
         private float _speed;
         private float _flightTime;
@@ -24,7 +26,7 @@ namespace Gameplay.Boosts
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Player player))
+            if (other.TryGetComponent(out Player _))
             {
                 _signalBus.Fire(new PlayerGetJetpackSignal(this));
                 Despawn();
@@ -34,6 +36,10 @@ namespace Gameplay.Boosts
         public override void Despawn()
         {
             _signalBus.Fire(new ResetSignal<Jetpack>(this));
+        }
+
+        public void Reset()
+        {
         }
     }
 }

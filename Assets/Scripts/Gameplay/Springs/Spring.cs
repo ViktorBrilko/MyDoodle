@@ -1,4 +1,5 @@
 using Core;
+using Core.Configs;
 using Gameplay.Players;
 using Gameplay.Signals;
 using UnityEngine;
@@ -25,9 +26,9 @@ namespace Gameplay.Springs
 
       private void OnTriggerEnter2D(Collider2D other)
       {
-         if (other.gameObject.TryGetComponent(out Player player))
+         if (other.gameObject.TryGetComponent(out PlayerMovement playerMovement))
          {
-            player.SpecialJump(_jumpForce, _springLayerNumber);
+            playerMovement.SpecialJump(_jumpForce, _springLayerNumber);
          }
       }
 

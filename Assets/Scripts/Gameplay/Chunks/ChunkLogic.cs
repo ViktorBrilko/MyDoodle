@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using Core;
-using Gameplay.Signals;
+using Core.Configs;
 using UnityEngine;
-using Zenject;
 
 namespace Gameplay.Chunks
 {
-    public class Chunk : MonoBehaviour, IResetable
+    public class ChunkLogic 
     {
-        private SignalBus _signalBus;
         private float _yCameraOffset;
         private List<IDespawnable> _items = new();
         private List<Vector2> _itemsPositions = new();
         private int _springsInChunk;
         private int _boostsInChunk;
         private int _maxSpringsInChunk;
+
+        public float YCameraOffset => _yCameraOffset;
 
         public List<Vector2> ItemsPositions => _itemsPositions;
 
@@ -31,38 +31,12 @@ namespace Gameplay.Chunks
             get => _boostsInChunk;
             set => _boostsInChunk = value;
         }
-
-        [Inject]
-        public void Construct(ChunkConfig config, SignalBus signalBus)
+       
+        public ChunkLogic(ChunkConfig config)
         {
             _yCameraOffset = config.YCameraOffset;
-            _signalBus = signalBus;
 
             _maxSpringsInChunk = Random.Range(config.MinSprings, config.MaxSprings + 1);
-        }
-
-        public void Add(IDespawnable item, Vector2 position)
-        {
-            _items.Add(item);
-            _itemsPositions.Add(position);
-        }
-
-        private void Update()
-        {
-            if (CheckChunkVisibility())
-            {
-                TurnOff();
-            }
-        }
-
-        private bool CheckChunkVisibility()
-        {
-            return Camera.main.WorldToViewportPoint(transform.position).y <= _yCameraOffset;
-        }
-
-        private void TurnOff()
-        {
-            _signalBus.Fire(new ResetSignal<Chunk>(this));
         }
 
         public void Reset()
@@ -74,6 +48,15 @@ namespace Gameplay.Chunks
 
             _items.Clear();
             _itemsPositions.Clear();
+            _boostsInChunk = 0;
+            _springsInChunk = 0;
         }
+
+        public void Add(IDespawnable item, Vector2 position)
+        {
+            _items.Add(item);
+            _itemsPositions.Add(position);
+        }
+       
     }
 }

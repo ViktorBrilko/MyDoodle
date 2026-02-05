@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gameplay.Boosts
+namespace Core.Configs
 {
     [Serializable]
     public class JetpackConfig

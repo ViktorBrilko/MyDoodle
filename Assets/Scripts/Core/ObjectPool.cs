@@ -8,15 +8,15 @@ namespace Core
     public class ObjectPool<T> : IInitializable where T : Component
     {
         private int _capacity;
-        private IFabric<T> _fabric;
+        private IFactory<T> _factory;
         private List<T> _pool = new();
         private Transform _container;
 
         public Transform Container => _container;
 
-        public ObjectPool(IFabric<T> fabric, Transform container, int capacity)
+        public ObjectPool(IFactory<T> factory, Transform container, int capacity)
         {
-            _fabric = fabric;
+            _factory = factory;
             _capacity = capacity;
             _container = container;
         }
@@ -37,7 +37,7 @@ namespace Core
 
         public T AddNewItem()
         {
-            T spawned = _fabric.Create(_container.transform);
+            T spawned = _factory.Create(_container.transform);
             spawned.gameObject.SetActive(false);
 
             _pool.Add(spawned);

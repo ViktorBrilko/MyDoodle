@@ -1,4 +1,5 @@
-﻿using Gameplay.Players;
+﻿using Core.Configs;
+using Gameplay.Players;
 using Gameplay.Signals;
 using UnityEngine;
 using Zenject;
@@ -17,7 +18,7 @@ namespace Gameplay.Platforms
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.TryGetComponent(out Player player) && player.Rigidbody2D.velocity.y <= 0)
+            if (other.gameObject.TryGetComponent(out PlayerMovement playerMovement) && playerMovement.Rigidbody2D.velocity.y <= 0)
             {
                 Despawn();
             }

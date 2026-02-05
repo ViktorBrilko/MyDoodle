@@ -1658,7 +1658,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreText: {fileID: 1330396472}
-  _scoreCoef: 10
 --- !u!4 &1672277512
 Transform:
   m_ObjectHideFlags: 0
@@ -1907,7 +1906,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2111360714}
   - component: {fileID: 2111360713}
-  - component: {fileID: 2111360715}
   - component: {fileID: 2111360716}
   m_Layer: 0
   m_Name: SceneContext
@@ -1963,18 +1961,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2111360715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2111360712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6baef5f0da66df54ca6b549f18e35148, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2111360716
 MonoBehaviour:
   m_ObjectHideFlags: 0

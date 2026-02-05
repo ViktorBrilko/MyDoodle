@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Gameplay.Players
+namespace Core.Configs
 {
     [Serializable]
     public class PlayerConfig

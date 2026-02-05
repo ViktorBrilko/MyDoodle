@@ -5,18 +5,19 @@ namespace Gameplay.Players
     public class PlayerInputHandler : MonoBehaviour
     {
         [SerializeField] private Player _player;
+        [SerializeField] private PlayerMovement _playerMovement;
 
         private void Update()
         {
             float direction = Input.GetAxis("Horizontal");
-            _player.Move(direction);
+            _playerMovement.Move(direction);
 
             if (Input.GetKeyDown(KeyCode.E))
             {
                 _player.Fire();
             }
         
-            _player.Jump();
+            _playerMovement.Jump();
             
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.Space)) {

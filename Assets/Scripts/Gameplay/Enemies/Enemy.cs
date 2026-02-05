@@ -1,4 +1,5 @@
 using Core;
+using Core.Configs;
 using Gameplay.Players;
 using Gameplay.Signals;
 using UnityEngine;
@@ -39,19 +40,19 @@ namespace Gameplay.Enemies
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.TryGetComponent(out Player player))
+            if (other.gameObject.TryGetComponent(out PlayerMovement playerMovement))
             {
-                if (_deadZone.IsTouching(player.GroundChecker))
+                if (_deadZone.IsTouching(playerMovement.GroundChecker))
                 {
-                    player.Jump();
+                    playerMovement.Jump();
                     Die();
                 }
                 else
                 {
-                    if (!player.IsInvincible)
+                    if (!playerMovement.Player.IsInvincible)
                     {
-                        player.Die();
-                        player.ChangePlayerVelocity(0, 0);
+                        playerMovement.Player.Die();
+                        playerMovement.ChangePlayerVelocity(0, 0);
                     }
                     else
                     {

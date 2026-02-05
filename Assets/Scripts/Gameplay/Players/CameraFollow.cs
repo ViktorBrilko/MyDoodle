@@ -6,14 +6,16 @@ namespace Gameplay.Players
 {
     public class CameraFollow : MonoBehaviour
     {
+        private PlayerMovement _playerMovement;
         private Player _player;
         private CinemachineVirtualCamera _camera;
         private float _cameraBottom;
 
         [Inject]
-        public void Construct(Player player)
+        public void Construct(Player player,  PlayerMovement playerMovement)
         {
             _player = player;
+            _playerMovement = playerMovement;
             _camera = GetComponent<CinemachineVirtualCamera>();
 
             _camera.Follow = _player.transform;
@@ -27,7 +29,7 @@ namespace Gameplay.Players
 
         private void CheckPlayerYPosition()
         {
-            if (_player.Rigidbody2D.velocity.y > 0)
+            if (_playerMovement.Rigidbody2D.velocity.y > 0)
             {
                 _cameraBottom = Camera.main.ViewportToWorldPoint(Vector2.zero).y;
             }
@@ -36,7 +38,7 @@ namespace Gameplay.Players
             {
                 Debug.Log("игрок умер от падения");
                 _player.Die();
-            } 
+            }
         }
     }
 }

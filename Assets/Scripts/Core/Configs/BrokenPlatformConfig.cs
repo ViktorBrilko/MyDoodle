@@ -1,4 +1,4 @@
-﻿namespace Gameplay.Platforms
+﻿namespace Core.Configs
 {
     public class BrokenPlatformConfig
     {

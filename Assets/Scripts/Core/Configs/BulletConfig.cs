@@ -1,6 +1,6 @@
 using System;
 
-namespace Gameplay.Bullets
+namespace Core.Configs
 {
     [Serializable]
     public class BulletConfig 

@@ -3,16 +3,8 @@ using UnityEngine;
 
 namespace Gameplay.Boosts
 {
-    public class Boost : MonoBehaviour, IDespawnable, IResetable
+    public abstract class Boost : MonoBehaviour, IDespawnable
     {
-        public virtual void Despawn()
-        {
-            
-        }
-
-        public void Reset()
-        {
-            
-        }
+        public abstract void Despawn();
     }
 }

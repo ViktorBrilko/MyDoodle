@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gameplay.Ads
+namespace Core.Configs
 {
     [Serializable]
     public class AdsConfig

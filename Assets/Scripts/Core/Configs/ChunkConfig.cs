@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gameplay.Chunks
+namespace Core.Configs
 {
     [Serializable]
     public class ChunkConfig 
@@ -15,7 +15,7 @@ namespace Gameplay.Chunks
         public int BigChangeYChance { get; set; }
         public int BigChangeY { get; set; }
         public int DefaultChangeY { get; set; }
-        public float PlatformXDistanceCoef { get; set; }
+        public float ItemXDistanceCoef { get; set; }
 
         public int MaxEnemiesInChunk { get; set; }
         public int MinEnemiesInChunk { get; }
